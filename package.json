@@ -1,7 +1,6 @@
 {
   "name": "nice-select2",
   "version": "1.0.0",
-  "private": true,
   "description": "A lightweight vanilla javascript library that replaces native select elements with customizable dropdowns",
   "main": "./dist/js/nice-select2.js",
   "scripts": {

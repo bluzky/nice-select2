@@ -2,24 +2,34 @@
 
 A lightweight jQuery plugin that replaces native select elements with customizable dropdowns.
 
+## Install
+```
+npm i nice-select2
+```
+
 ## Usage
 
-Include jQuery and the plugin.
+Include nice-select2 script.
 
 ```html
 <script src="path/to/nice-select2.js"></script>
 ```
 
-Include the plugin styles, either the compiled CSS...
+Include the styles, either the compiled CSS...
 
 ```html
 <link rel="stylesheet" href="path/to/nice-select2.css">
 ```
 
-...or, ideally, import the SASS source (if you use SASS) in your main stylesheet for easier customization.
+Or import nice-select2 using ES6 syntax
+```js
+import NiceSelect from 'nice-select2';
+```
 
 ```scss
-@import 'nice-select2';
+@import '~nice-select2/dist/css/nice-select2.css';
+// or
+@import '~nice-select2/src/scss/nice-select2.scss';
 ```
 
 Finally, initialize the plugin.
