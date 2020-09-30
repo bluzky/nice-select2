@@ -3,13 +3,13 @@ $font_size: 14px !default;
 $font_size_small: 12px !default;
 
 $input_border_radius: 5px !default;
-$input_height: 38px;
+$input_height: 38px !default;
 $input_height_small: 36px !default;
 $dropdown_padding: 18px !default;
 
 $gray_dark: #444 !default;
 $gray: #999 !default;
-$gray_light: #e8e8e8 ;
+$gray_light: #e8e8e8 !default;
 $gray_lighter: #f6f6f6 !default;
 $primary_light: $gray !default;
 $arrow_color: $gray !default;
