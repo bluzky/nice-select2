@@ -157,19 +157,16 @@ NiceSelect.prototype.renderDropdown = function() {
 
 NiceSelect.prototype._renderSelectedItems = function() {
   if (this.multiple) {
-	if(this.selectedOptions.length < 2 || this.el.computedStyleMap().get('width').value == 'auto'){
-		var selectedHtml = "";
-
-		this.selectedOptions.forEach(function(item) {
-		  selectedHtml += `<span class="current">${item.data.text}</span>`;
-		});
-		selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
-
-		this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
-	}else{
-		this.dropdown.querySelector(".multiple-options").innerHTML = this.selectedOptions.length+' selected'
-	}
+    var selectedHtml = "";
     
+	console.log(this)
+	
+    this.selectedOptions.forEach(function(item) {
+      selectedHtml += `<span class="current">${item.data.text}</span>`;
+    });
+    selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
+
+    this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
   } else {
     var html =
       this.selectedOptions.length > 0
@@ -296,7 +293,10 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
 
   if (!hasClass(optionEl, "disabled")) {
     if (this.multiple) {
-      if (!hasClass(optionEl, "selected")) {
+      if (hasClass(optionEl, "selected")) {
+		removeClass(optionEl, "selected");
+		this.selectedOptions.splice(this.selectedOptions.indexOf(option),1)
+	  }else{
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
       }
