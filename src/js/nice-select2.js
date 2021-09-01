@@ -297,8 +297,9 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
 
 NiceSelect.prototype.updateSelectValue = function() {
   if (this.multiple) {
-    this.selectedOptions.each(function(item) {
-      var el = this.el.querySelector('option[value="' + item.data.value + '"]');
+    var select = this.el;
+    this.selectedOptions.forEach(function(item) {
+      var el = select.querySelector('option[value="' + item.data.value + '"]');
       if (el) el.setAttribute("selected", true);
     });
   } else if (this.selectedOptions.length > 0) {
