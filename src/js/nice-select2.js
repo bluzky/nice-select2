@@ -157,14 +157,19 @@ NiceSelect.prototype.renderDropdown = function() {
 
 NiceSelect.prototype._renderSelectedItems = function() {
   if (this.multiple) {
-    var selectedHtml = "";
+	if(this.selectedOptions.length < 2 || this.el.computedStyleMap().get('width').value == 'auto'){
+		var selectedHtml = "";
 
-    this.selectedOptions.forEach(function(item) {
-      selectedHtml += `<span class="current">${item.data.text}</span>`;
-    });
-    selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
+		this.selectedOptions.forEach(function(item) {
+		  selectedHtml += `<span class="current">${item.data.text}</span>`;
+		});
+		selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
 
-    this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
+		this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
+	}else{
+		this.dropdown.querySelector(".multiple-options").innerHTML = this.selectedOptions.length+' selected'
+	}
+    
   } else {
     var html =
       this.selectedOptions.length > 0
