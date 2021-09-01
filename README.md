@@ -35,7 +35,7 @@ import NiceSelect from 'nice-select2';
 Finally, initialize the plugin.
 
 ```javascript
-  NiceSelect.bind(document.getElementById("#a-select"));
+  NiceSelect.bind(document.getElementById("a-select"));
 ```
 
 Full documentation and examples at [https://bluzky.github.io/nice-select2/](https://bluzky.github.io/nice-select2/).
