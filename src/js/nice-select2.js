@@ -13,6 +13,18 @@ function triggerChange(el) {
   el.dispatchEvent(event);
 }
 
+function triggerFocusIn(el) {
+  var event = document.createEvent("FocusEvent");
+  event.initEvent("focusin", true, false);
+  el.dispatchEvent(event);
+}
+
+function triggerFocusOut(el) {
+  var event = document.createEvent("FocusEvent");
+  event.initEvent("focusout", true, false);
+  el.dispatchEvent(event);
+}
+
 function attr(el, key) {
   return el.getAttribute(key);
 }
@@ -232,6 +244,8 @@ NiceSelect.prototype.bindEvent = function() {
   var $this = this;
   this.dropdown.addEventListener("click", this._onClicked.bind(this));
   this.dropdown.addEventListener("keydown", this._onKeyPressed.bind(this));
+  this.dropdown.addEventListener("focusin", triggerFocusIn.bind(this, this.el));
+  this.dropdown.addEventListener("focusout", triggerFocusOut.bind(this, this.el));
   window.addEventListener("click", this._onClickedOutside.bind(this));
 
   if (this.config.searchable) {
