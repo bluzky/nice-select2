@@ -1,6 +1,6 @@
-# jQuery Nice Select
+# Nice Select
 
-A lightweight jQuery plugin that replaces native select elements with customizable dropdowns.
+A lightweight Vanilla JavaScript plugin that replaces native select elements with customizable dropdowns.
 
 ## Install
 ```
