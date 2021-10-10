@@ -47,6 +47,7 @@ var defaultOptions = {
   data: null,
   searchable: false,
 };
+
 function NiceSelect(element, options) {
   this.el = element;
   this.config = Object.assign({}, defaultOptions, options || {});
@@ -347,13 +348,9 @@ NiceSelect.prototype._onClickedOutside = function (e) {
   }
 };
 
-function isVisible(e) {
-  return !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length);
-}
-
 NiceSelect.prototype._onKeyPressed = function (e) {
+  e.preventDefault();
   // Keyboard events
-
   var focusedOption = this.dropdown.querySelector(".focus");
 
   var open = this.dropdown.classList.contains("open");
