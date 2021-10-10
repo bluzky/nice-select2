@@ -63,8 +63,7 @@ if (manifest.IS_PRODUCTION) {
           if_return: true,
           join_vars: true,
           sequences: true,
-          unused: true,
-          warnings: false
+          unused: true
         },
 
         output: {
