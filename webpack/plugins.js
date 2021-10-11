@@ -13,11 +13,16 @@ const plugins = [];
 // extract plugin
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const extractPlugin = new MiniCssExtractPlugin({
+/* const extractPlugin = new MiniCssExtractPlugin({
   filename: manifest.outputFiles.css,
   //filename: "[name].css",
   allChunks: true
+}); */
+
+const extractPlugin = new MiniCssExtractPlugin({
+  filename: manifest.outputFiles.css,
 });
+
 
 plugins.push(extractPlugin);
 
@@ -25,12 +30,11 @@ plugins.push(extractPlugin);
 const path = require("path"),
   CopyWebpackPlugin = require("copy-webpack-plugin");
 
-const copyPlugin = new CopyWebpackPlugin([
-  {
-    from: manifest.paths.src + "/static/**/*",
-    to: manifest.paths.build
-  }
-]);
+const copyPlugin = new CopyWebpackPlugin({
+	patterns: [
+		{ from: manifest.paths.src,  to: manifest.paths.build },
+	]
+});
 
 plugins.push(copyPlugin);
 
