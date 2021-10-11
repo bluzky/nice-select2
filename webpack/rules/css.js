@@ -48,7 +48,7 @@ const loaders = [
 if (manifest.IS_PRODUCTION) {
   rule = {
     test: /\.css$/,
-    loader: loaders,
+	use: {loader: 'css-loader'}
   };
 }
 

@@ -24,33 +24,33 @@ const loaders = [
   {
     loader: MiniCssExtractPlugin.loader,
     options: {
-      sourceMap: manifest.IS_DEVELOPMENT,
-      importLoader: 2
+      //sourceMap: manifest.IS_DEVELOPMENT,
+      //importLoader: 2
     }
   },
   {
     loader: "css-loader",
     options: {
       sourceMap: manifest.IS_DEVELOPMENT,
-      minimize: manifest.IS_PRODUCTION
+      //minimize: manifest.IS_PRODUCTION
     }
   },
   {
     loader: "postcss-loader",
     options: {
       sourceMap: manifest.IS_DEVELOPMENT,
-      plugins: () => [cssNext()]
+      //plugins: () => [cssNext()]
     }
   },
   {
     loader: "sass-loader",
     options: {
       sourceMap: manifest.IS_DEVELOPMENT,
-      includePaths: [
+/*       includePaths: [
         path.join("../../", "node_modules"),
         path.join(manifest.paths.src, "styles"),
         path.join(manifest.paths.src, "")
-      ]
+      ] */
     }
   }
 ];
