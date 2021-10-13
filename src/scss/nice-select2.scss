@@ -163,6 +163,10 @@ $arrow_color: $gray !default;
       cursor: default;
     }
   }
+  
+  .optgroup{
+   font-weight: bold; 
+  }
 }
 
 // Use display instead of opacity for IE <= 10
