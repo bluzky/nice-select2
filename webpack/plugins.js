@@ -61,14 +61,14 @@ plugins.push(
     global: "window",
     window: "window"
   }),
-  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  new webpack.IgnorePlugin({ resourceRegExp:/^\.\/locale$/, contextRegExp: /moment$/})
 );
 
 // ----------------------------
 // @Merging Development Plugins
 // ----------------------------
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+//const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+  
 if (manifest.IS_DEVELOPMENT) {
   plugins
     .push

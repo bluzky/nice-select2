@@ -1,3 +1,4 @@
+@use 'sass:math';
 // Default variables
 $font_size: 14px !default;
 $font_size_small: 12px !default;
@@ -122,7 +123,7 @@ $arrow_color: $gray !default;
     position: absolute;
     top: 100%; left: 0;
     transform-origin: 50% 0;
-    transform: scale(.75) translateY(- $input_height / 2);
+    transform: scale(.75) translateY(- math.div(-$input-height, 2));
     transition: all .2s cubic-bezier(0.5, 0, 0, 1.25), opacity .15s ease-out;
     z-index: 9;
     opacity: 0;
@@ -162,6 +163,10 @@ $arrow_color: $gray !default;
       color: $gray;
       cursor: default;
     }
+  }
+  
+  .optgroup{
+    font-weight: bold;
   }
 }
 
