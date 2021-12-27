@@ -50,7 +50,7 @@ var defaultOptions = {
   data: null,
   searchable: false
 };
-function NiceSelect(element, options) {
+export default function NiceSelect(element, options) {
   this.el = element;
   this.config = Object.assign({}, defaultOptions, options || {});
   this.data = this.config.data;
