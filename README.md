@@ -36,8 +36,14 @@ import NiceSelect from "nice-select2";
 
 Finally, initialize the plugin.
 
+Using the minimified file directly:
 ```javascript
-NiceSelect.bind(document.getElementById("a-select"));
+NiceSelect.bind(document.getElementById("a-select"), {searchable: true});
+```
+
+Using as import in webpack:
+```javascript
+new NiceSelect(document.getElementById("a-select"), {searchable: true});
 ```
 
 ## Instance method

@@ -1,64 +1,37 @@
 {
   "name": "nice-select2",
-  "version": "1.0.0",
-  "description": "A lightweight vanilla javascript library that replaces native select elements with customizable dropdowns",
-  "main": "./dist/js/nice-select2.js",
+  "version": "2.0.0",
+  "description": "A lightweight Vanilla JavaScript plugin that replaces native select elements with customizable dropdowns.",
+  "main": "webpack.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mini-css-extract-plugin": "^2.4.5",
+    "sass": "^1.45.1",
+    "sass-loader": "^12.4.0",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  },
   "scripts": {
     "watch": "webpack --watch --progress",
-    "start": "webpack-dev-server",
-    "dev": "webpack",
+    "dev": "npm run clean && cross-env NODE_ENV=\"development\" webpack",
     "clean": "shx rm -rf build/static",
     "build": "npm run clean && cross-env NODE_ENV=\"production\" webpack"
   },
-  "dependencies": {
-    "postcss-preset-env": "^7.1.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluzky/nice-select2.git"
   },
-  "prettier": {
-    "overrides": [
-      {
-        "files": "*.scss$",
-        "options": {
-          "semi": "true"
-        }
-      }
-    ]
+  "keywords": [
+    "select",
+    "vanilla"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluzky/nice-select2/issues"
   },
-  "devDependencies": {
-    "@babel/core": "^7.16.5",
-    "@babel/plugin-proposal-class-properties": "^7.16.5",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-arrow-functions": "^7.16.5",
-    "@babel/plugin-transform-react-jsx": "^7.16.5",
-    "@babel/preset-env": "^7.16.5",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.2.3",
-    "babel-plugin-transform-custom-element-classes": "^0.1.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-runtime": "^6.26.0",
-    "case-sensitive-paths-webpack-plugin": "^2.4.0",
-    "copy-webpack-plugin": "^10.2.0",
-    "cross-env": "^7.0.3",
-    "css-loader": "^6.5.1",
-    "eslint": "^8.5.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.3",
-    "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.4.5",
-    "node-sass": "^7.0.0",
-    "postcss-cssnext": "^3.1.1",
-    "postcss-loader": "^6.2.1",
-    "sass-loader": "^12.4.0",
-    "shx": "^0.3.3",
-    "stylelint": "^14.2.0",
-    "terser-webpack-plugin": "^5.3.0",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "url-loader": "^4.1.1",
-    "webpack": "^5.65.0",
-    "webpack-bundle-analyzer": "^4.5.0",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.7.0"
-  }
+  "homepage": "https://github.com/bluzky/nice-select2#readme"
 }
