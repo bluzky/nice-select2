@@ -1,6 +1,4 @@
 //npm install mini-css-extract-plugin sass-loader sass webpack webpack-cli --save-dev
-
-const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
@@ -9,16 +7,12 @@ module.exports = {
 		style: "./src/scss/style.scss",
 	},
     output: {
-		path: path.resolve(__dirname, 'dist'),
 		filename: 'js/[name].js',
 		library: {
 			name: 'NiceSelect',
 			type: 'umd',
 		},
 	},
-    optimization: {
-		usedExports: true,
-    },
 	plugins: [new MiniCssExtractPlugin({
 		filename: "css/[name].css",
     })],
