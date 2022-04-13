@@ -82,11 +82,11 @@ NiceSelect.prototype.create = function() {
 
 NiceSelect.prototype.processData = function(data) {
   var options = [];
-  data.forEach(item=> {
+  data.forEach(item => {
     options.push({
       data: item,
       attributes: {
-        selected: false,
+        selected: !!item.selected,
         disabled: !!item.disabled,
 		    optgroup: item.value == 'optgroup'
       }
@@ -102,22 +102,22 @@ NiceSelect.prototype.extractData = function() {
   var selectedOptions = [];
 
   options.forEach(item => {
-	if(item.tagName == 'OPTGROUP'){
-		var itemData = {
-		  text: item.label,
-		  value: 'optgroup'
-		};
-	}else{
-		var itemData = {
-		  text: item.innerText,
-		  value: item.value,
-      disabled: item.getAttribute("disabled") != null
-		};
-
-	}
+  	if(item.tagName == 'OPTGROUP'){
+  		var itemData = {
+  		  text: item.label,
+  		  value: 'optgroup'
+  		};
+  	} else {
+  		var itemData = {
+  		  text: item.innerText,
+  		  value: item.value,
+        selected: item.getAttribute("selected") != null || this.el.value == item.value,
+        disabled: item.getAttribute("disabled") != null
+  		};
+  	}
 
     var attributes = {
-      selected: item.getAttribute("selected") != null,
+      selected: item.getAttribute("selected") != null || this.el.value == item.value,
       disabled: item.getAttribute("disabled") != null,
       optgroup: item.tagName == 'OPTGROUP'
     };
@@ -133,6 +133,8 @@ NiceSelect.prototype.extractData = function() {
   });
 
   this.selectedOptions = selectedOptions;
+
+  console.log('got selected opts', this.selectedOptions);
 };
 
 NiceSelect.prototype.renderDropdown = function() {
@@ -165,23 +167,23 @@ NiceSelect.prototype.renderDropdown = function() {
 };
 
 NiceSelect.prototype._renderSelectedItems = function() {
-  if (this.multiple) {
+  if(this.multiple) {
     var selectedHtml = "";
-	if(window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length <2){
-		this.selectedOptions.forEach(function(item) {
-		  selectedHtml += `<span class="current">${item.data.text}</span>`;
-		});
-		selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
-	}else{
-		selectedHtml = this.selectedOptions.length+' selected';
-	}
-	
+    if(window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length <2) {
+      this.selectedOptions.forEach(function(item) {
+        selectedHtml += `<span class="current">${item.data.text}</span>`;
+      });
+      selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
+    } else {
+      selectedHtml = this.selectedOptions.length+' selected';
+    }
+
     this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
   } else {
     var html =
       this.selectedOptions.length > 0
-        ? this.selectedOptions[0].data.text
-        : this.placeholder;
+      ? this.selectedOptions[0].data.text
+      : this.placeholder;
 
     this.dropdown.querySelector(".current").innerHTML = html;
   }
@@ -197,18 +199,21 @@ NiceSelect.prototype._renderItems = function() {
 NiceSelect.prototype._renderItem = function(option) {
   var el = document.createElement("li");
   el.innerHTML = option.data.text;
+
   if(option.attributes.optgroup){
 	  el.classList.add('optgroup');
-  }else{
- 	el.setAttribute("data-value", option.data.value);
-	var classList = [
-		"option",
-		option.attributes.selected ? "selected" : null,
-		option.attributes.disabled ? "disabled" : null,
-	];
-	
-	el.addEventListener("click", this._onItemClicked.bind(this, option));
-	el.classList.add(...classList);
+  } else {
+   	el.setAttribute("data-value", option.data.value);
+  	var classList = [
+  		"option",
+  		option.attributes.selected ? "selected" : null,
+  		option.attributes.disabled ? "disabled" : null,
+  	].filter(Boolean);
+
+    console.log(option.data.value, option);
+  	
+  	el.addEventListener("click", this._onItemClicked.bind(this, option));
+  	el.classList.add(...classList);
   }
 
   option.element = el;
@@ -283,7 +288,7 @@ NiceSelect.prototype._bindSearchEvent = function() {
 NiceSelect.prototype._onClicked = function(e) {
 	if (this.multiple) {
 		this.dropdown.classList.add("open");
-	}else{
+	} else {
 		this.dropdown.classList.toggle("open");
 	}
 
@@ -312,10 +317,10 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
   if (!hasClass(optionEl, "disabled")) {
     if (this.multiple) {
       if (hasClass(optionEl, "selected")) {
-		removeClass(optionEl, "selected");
-		this.selectedOptions.splice(this.selectedOptions.indexOf(option),1);
-		this.el.querySelector('option[value="' + optionEl.dataset.value + '"]').selected=false;
-	  }else{
+        removeClass(optionEl, "selected");
+        this.selectedOptions.splice(this.selectedOptions.indexOf(option),1);
+        this.el.querySelector('option[value="' + optionEl.dataset.value + '"]').selected=false;
+      } else {
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
       }
