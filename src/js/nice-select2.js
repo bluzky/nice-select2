@@ -87,8 +87,8 @@ NiceSelect.prototype.processData = function(data) {
       data: item,
       attributes: {
         selected: false,
-        disabled: false,
-		optgroup: item.value == 'optgroup'
+        disabled: !!item.disabled,
+		    optgroup: item.value == 'optgroup'
       }
     });
   });
@@ -110,7 +110,8 @@ NiceSelect.prototype.extractData = function() {
 	}else{
 		var itemData = {
 		  text: item.innerText,
-		  value: item.value
+		  value: item.value,
+      disabled: item.getAttribute("disabled") != null
 		};
 
 	}
@@ -118,7 +119,7 @@ NiceSelect.prototype.extractData = function() {
     var attributes = {
       selected: item.getAttribute("selected") != null,
       disabled: item.getAttribute("disabled") != null,
-	  optgroup: item.tagName == 'OPTGROUP'
+      optgroup: item.tagName == 'OPTGROUP'
     };
 
     data.push(itemData);
