@@ -133,8 +133,6 @@ NiceSelect.prototype.extractData = function() {
   });
 
   this.selectedOptions = selectedOptions;
-
-  console.log('got selected opts', this.selectedOptions);
 };
 
 NiceSelect.prototype.renderDropdown = function() {
@@ -209,8 +207,6 @@ NiceSelect.prototype._renderItem = function(option) {
   		option.attributes.selected ? "selected" : null,
   		option.attributes.disabled ? "disabled" : null,
   	].filter(Boolean);
-
-    console.log(option.data.value, option);
   	
   	el.addEventListener("click", this._onItemClicked.bind(this, option));
   	el.classList.add(...classList);
