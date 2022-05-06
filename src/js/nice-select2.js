@@ -313,7 +313,7 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
       if (hasClass(optionEl, "selected")) {
 		removeClass(optionEl, "selected");
 		this.selectedOptions.splice(this.selectedOptions.indexOf(option),1);
-		this.el.querySelector('option[value="' + optionEl.dataset.value + '"]').selected=false;
+		this.el.querySelector('option[value="' + optionEl.dataset.value + '"]').removeAttribute('selected');
 	  }else{
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
