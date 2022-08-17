@@ -26,7 +26,14 @@ function triggerFocusOut(el) {
 }
 
 function attr(el, key) {
-  return el.getAttribute(key);
+  switch(key) {
+    case 'disabled':
+      return !!el.disabled;
+      break;
+    default:
+      return el.getAttribute(key);
+      break;
+  }
 }
 
 function data(el, key) {
@@ -226,6 +233,12 @@ NiceSelect.prototype.update = function() {
     if (open) {
       triggerClick(this.dropdown);
     }
+  }
+  
+  if(attr(this.el, "disabled")) {
+    this.disable();
+  } else {
+    this.enable();
   }
 };
 
