@@ -58,7 +58,8 @@ function removeClass(el, className) {
 
 var defaultOptions = {
   data: null,
-  searchable: false
+  searchable: false,
+  showSelectedItems: false
 };
 export default function NiceSelect(element, options) {
   this.el = element;
@@ -179,7 +180,7 @@ NiceSelect.prototype.renderDropdown = function() {
 NiceSelect.prototype._renderSelectedItems = function() {
   if (this.multiple) {
     var selectedHtml = "";
-	if(window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length <2){
+	if(this.config.showSelectedItems || window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length <2){
 		this.selectedOptions.forEach(function(item) {
 		  selectedHtml += `<span class="current">${item.data.text}</span>`;
 		});
