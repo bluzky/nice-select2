@@ -6,7 +6,11 @@
   "directories": {
     "doc": "docs"
   },
-  "dependencies": {},
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.3",
+    "shx": "^0.3.4"
+  },
   "devDependencies": {
     "mini-css-extract-plugin": "^2.4.5",
     "sass": "^1.45.1",

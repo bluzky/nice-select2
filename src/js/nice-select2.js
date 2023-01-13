@@ -25,6 +25,16 @@ function triggerFocusOut(el) {
   el.dispatchEvent(event);
 }
 
+function triggerValidationMessage(el, type) {
+  if(type == 'invalid'){
+    this.dropdown.classList.remove('valid');
+    this.dropdown.classList.add('invalid');
+  }else{
+    this.dropdown.classList.remove('invalid');
+    this.dropdown.classList.add('valid');
+  }
+}
+
 function attr(el, key) {
   return el.getAttribute(key);
 }
@@ -69,7 +79,10 @@ export default function NiceSelect(element, options) {
 }
 
 NiceSelect.prototype.create = function() {
-  this.el.style.display = "none";
+  this.el.style.opacity = "0";
+  this.el.style.width = "0";
+  this.el.style.padding = "0";
+  this.el.style.height = "0";
   if (this.data) {
     this.processData(this.data);
   } else {
@@ -261,6 +274,7 @@ NiceSelect.prototype.bindEvent = function() {
   this.dropdown.addEventListener("keydown", this._onKeyPressed.bind(this));
   this.dropdown.addEventListener("focusin", triggerFocusIn.bind(this, this.el));
   this.dropdown.addEventListener("focusout", triggerFocusOut.bind(this, this.el));
+  this.el.addEventListener("invalid", triggerValidationMessage.bind(this, this.el, 'invalid'));
   window.addEventListener("click", this._onClickedOutside.bind(this));
 
   if (this.config.searchable) {
