@@ -1,0 +1,33 @@
+name: On release
+on:
+    release:
+        types: [released]
+jobs:
+  resources:
+    name: Update wp plugin version
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v3
+
+        - uses: actions/setup-node@v1
+
+        - name: Update version
+          run: python ./.github/workflows/update_version.py ${{ github.event.release.name }}
+
+        - name: Update version
+          uses: test-room-7/action-update-file@v1
+          with:
+              file-path: |
+                CHANGELOG.md
+              commit-msg: Update version
+              github-token: ${{ secrets.GITHUB_TOKEN }}
+        - name: Zip Folder
+          run: zip -r ${{ github.event.repository.name }}.zip . -x ".git/*" ".github/*" "phpcs.xml" "composer.json" "composer.lock" ".gitignore" "signalbot.db" "SignalBot.py" "CHANGELOG.md" "README.md" "*.code-workspace" "*.cmd" "test.php"
+
+        - name: Release
+          uses: softprops/action-gh-release@v1
+          if: startsWith(github.ref, 'refs/tags/')
+          with:
+            files: ${{ github.event.repository.name }}.zip
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
