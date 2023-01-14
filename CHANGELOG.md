@@ -3,6 +3,17 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+
+## [v2.1.0] - 2023-01-14
+
+
+### Added
 - support for direct attributes
 - invalid/valid class for form validation
 - modalopen and modalclose events #33
