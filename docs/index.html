@@ -256,7 +256,7 @@
       searchtext: 'zoek', 
       selectedtext: 'geselecteerd'
     };
-     NiceSelect.bind(document.getElementById("translated-select"), options); 
+    document.getElementById("translated-select")._niceSelect  = NiceSelect.bind(document.getElementById("translated-select"), options); 
    });
   </script>
   

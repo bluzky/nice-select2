@@ -25,6 +25,18 @@ function triggerFocusOut(el) {
   el.dispatchEvent(event);
 }
 
+function triggerModalOpen(el) {
+  var event = document.createEvent("UIEvent");
+  event.initEvent("modalopen", true, false);
+  el.dispatchEvent(event);
+}
+
+function triggerModalClose(el) {
+  var event = document.createEvent("UIEvent");
+  event.initEvent("modalclose", true, false);
+  el.dispatchEvent(event);
+}
+
 function triggerValidationMessage(el, type) {
   if(type == 'invalid'){
     addClass(this.dropdown, 'invalid');
@@ -47,8 +59,11 @@ function data(el, key) {
 }
 
 function hasClass(el, className) {
-  if (el) return el.classList.contains(className);
-  else return false;
+  if (el){
+    return el.classList.contains(className);
+  }else{
+    return false;
+  }
 }
 
 function addClass(el, className) {
@@ -214,7 +229,7 @@ NiceSelect.prototype._renderItem = function(option) {
   el.innerHTML  = option.data.text;
 
   if(option.attributes.optgroup){
-	  el.classList.add('optgroup');
+	  addClass(el, 'optgroup');
   }else{
     el.setAttribute("data-value", option.data.value);
     var classList = [
@@ -308,13 +323,15 @@ NiceSelect.prototype._bindSearchEvent = function() {
 
 NiceSelect.prototype._onClicked = function(e) {
   e.preventDefault();
-	if (this.multiple) {
-		this.dropdown.classList.add("open");
-	}else{
-		this.dropdown.classList.toggle("open");
+	if (!hasClass(this.dropdown, "open") ) {
+		addClass(this.dropdown, "open");
+    triggerModalOpen(this.el);
+	}else if(!this.multiple){
+		removeClass(this.dropdown, "open");
+    triggerModalClose(this.el);
 	}
 
-  if (this.dropdown.classList.contains("open")) {
+  if (hasClass(this.dropdown, "open")) {
     var search = this.dropdown.querySelector(".nice-select-search");
     if (search) {
       search.value = "";
@@ -393,7 +410,8 @@ NiceSelect.prototype.resetSelectValue = function() {
 
 NiceSelect.prototype._onClickedOutside = function(e) {
   if (!this.dropdown.contains(e.target)) {
-    this.dropdown.classList.remove("open");
+    removeClass(this.dropdown, "open");
+    triggerModalClose(this.el);
   }
 };
 
@@ -402,7 +420,7 @@ NiceSelect.prototype._onKeyPressed = function(e) {
 
   var focusedOption = this.dropdown.querySelector(".focus");
 
-  var open = this.dropdown.classList.contains("open");
+  var open = hasClass(this.dropdown, "open");
 
   // Enter
   if (e.keyCode == 13) {
@@ -482,7 +500,7 @@ NiceSelect.prototype._findPrev = function(el) {
 };
 
 NiceSelect.prototype._onSearchChanged = function(e) {
-  var open = this.dropdown.classList.contains("open");
+  var open = hasClass(this.dropdown, "open");
   var text = e.target.value;
   text = text.toLowerCase();
 
