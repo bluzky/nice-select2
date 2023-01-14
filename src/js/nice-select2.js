@@ -103,8 +103,8 @@ NiceSelect.prototype.processData = function(data) {
     options.push({
       data: item,
       attributes: {
-        selected: false,
-        disabled: false,
+        selected: !!item.selected,
+        disabled: !!item.disabled,
 		    optgroup: item.value == 'optgroup'
       }
     });
@@ -127,7 +127,9 @@ NiceSelect.prototype.extractData = function() {
     }else{
       var itemData = {
         text: item.innerText,
-        value: item.value
+        value: item.value,
+        selected: item.getAttribute("selected") != null || this.el.value == item.value,
+        disabled: item.getAttribute("disabled") != null
       };
     }
 
@@ -239,6 +241,12 @@ NiceSelect.prototype.update = function() {
     if (open) {
       triggerClick(this.dropdown);
     }
+  }
+
+  if(attr(this.el, "disabled")) {
+    this.disable();
+  } else {
+    this.enable();
   }
 };
 
@@ -395,8 +403,8 @@ NiceSelect.prototype._onKeyPressed = function(e) {
 
   var open = this.dropdown.classList.contains("open");
 
-  // Space or Enter
-  if (e.keyCode == 32 || e.keyCode == 13) {
+  // Enter
+  if (e.keyCode == 13) {
     if (open) {
       triggerClick(focusedOption);
     } else {
@@ -431,6 +439,9 @@ NiceSelect.prototype._onKeyPressed = function(e) {
   } else if (e.keyCode == 27 && open) {
     // Esc
     triggerClick(this.dropdown);
+  } else if(e.keyCode === 32 && open) {
+    // Space
+    return false; 
   }
   return false;
 };
