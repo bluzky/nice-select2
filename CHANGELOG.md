@@ -4,11 +4,13 @@
 
 ### Added
 - support for direct attributes
+- invalid/valid class for form validation
 
 ### Changed
 - layout
 
 ### Fixed
+- Form validation message
 
 ### Updated
 - demo
