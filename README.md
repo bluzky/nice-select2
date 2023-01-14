@@ -38,7 +38,7 @@ Finally, initialize the plugin.
 
 Using the minimified file directly:
 ```javascript
-NiceSelect.bind(document.getElementById("a-select"), {searchable: true});
+NiceSelect.bind(document.getElementById("a-select"), {searchable: true, placeholder: 'select', searchtext: 'zoek', selectedtext: 'geselecteerd'});
 ```
 
 Using as import in webpack:
