@@ -2,7 +2,7 @@
   "name": "nice-select2",
   "version": "2.0.0",
   "description": "A lightweight Vanilla JavaScript plugin that replaces native select elements with customizable dropdowns.",
-  "main": "webpack.config.js",
+  "main": "src/js/nice-select.js",
   "directories": {
     "doc": "docs"
   },
