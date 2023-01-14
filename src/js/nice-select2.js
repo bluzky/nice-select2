@@ -36,6 +36,9 @@ function triggerValidationMessage(el, type) {
 }
 
 function attr(el, key) {
+  if(el[key] != undefined){
+    return el[key];
+  }
   return el.getAttribute(key);
 }
 
@@ -140,7 +143,7 @@ NiceSelect.prototype.extractData = function() {
 
   this.data     = data;
   this.options  = allOptions;
-  this.options.forEach(function(item) {
+  this.options.forEach(item => {
     if (item.attributes.selected){
       selectedOptions.push(item);
     }

@@ -126,6 +126,21 @@
       </select>
     </div>
 
+    <h2>Translations</h2>
+
+    <p>Translate the three different texts: 'Select an option', 'Search', 'selected'</p>
+    
+    <pre><code class="language-js">var options = {searchable: true, placeholder: 'select', searchtext: 'zoek', selectedtext: 'geselecteerd'};
+    NiceSelect.bind(document.getElementById("seachable-select"), options);</code></pre>
+    
+    <div class="box">
+      <select id="translated-select" multiple>
+        <option value="1">Some option</option>
+        <option value="2">Another option</option>
+        <option value="3" disabled>A disabled option</option>
+        <option value="4">Potato</option>
+      </select>
+    </div>
 
     <h2>Custom classes</h2>
     
@@ -232,6 +247,16 @@
      // seachable 
      var options = {searchable: true};
      NiceSelect.bind(document.getElementById("seachable-select"), options); 
+
+
+     //translated-select 
+     var options = {
+      searchable: true, 
+      placeholder: 'select', 
+      searchtext: 'zoek', 
+      selectedtext: 'geselecteerd'
+    };
+     NiceSelect.bind(document.getElementById("translated-select"), options); 
    });
   </script>
   
