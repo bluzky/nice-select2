@@ -3,6 +3,7 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+- support for direct attributes
 
 ### Changed
 - layout
