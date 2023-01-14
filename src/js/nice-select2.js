@@ -27,11 +27,11 @@ function triggerFocusOut(el) {
 
 function triggerValidationMessage(el, type) {
   if(type == 'invalid'){
-    this.dropdown.classList.remove('valid');
-    this.dropdown.classList.add('invalid');
+    addClass(this.dropdown, 'invalid');
+    removeClass(this.dropdown, 'valid');
   }else{
-    this.dropdown.classList.remove('invalid');
-    this.dropdown.classList.add('valid');
+    addClass(this.dropdown, 'valid');
+    removeClass(this.dropdown, 'invalid');
   }
 }
 
@@ -61,29 +61,29 @@ var defaultOptions = {
   searchable: false,
   showSelectedItems: false
 };
+
 export default function NiceSelect(element, options) {
-  this.el = element;
-  this.config = Object.assign({}, defaultOptions, options || {});
-  this.data = this.config.data;
-  this.selectedOptions = [];
+  this.el               = element;
+  this.config           = Object.assign({}, defaultOptions, options || {});
+  this.data             = this.config.data;
+  this.selectedOptions  = [];
 
-  this.placeholder =
-    attr(this.el, "placeholder") ||
-    this.config.placeholder ||
-    "Select an option";
+  this.placeholder      = attr(this.el, "placeholder") || this.config.placeholder || "Select an option";
+  this.searchtext       = attr(this.el, "searchtext") || this.config.searchtext || "Search";
+  this.selectedtext     = attr(this.el, "selectedtext") || this.config.selectedtext || "selected";
 
-  this.dropdown = null;
-  this.multiple = attr(this.el, "multiple");
-  this.disabled = attr(this.el, "disabled");
+  this.dropdown         = null;
+  this.multiple         = attr(this.el, "multiple");
+  this.disabled         = attr(this.el, "disabled");
 
   this.create();
 }
 
 NiceSelect.prototype.create = function() {
-  this.el.style.opacity = "0";
-  this.el.style.width = "0";
-  this.el.style.padding = "0";
-  this.el.style.height = "0";
+  this.el.style.opacity   = "0";
+  this.el.style.width     = "0";
+  this.el.style.padding   = "0";
+  this.el.style.height    = "0";
   if (this.data) {
     this.processData(this.data);
   } else {
@@ -102,7 +102,7 @@ NiceSelect.prototype.processData = function(data) {
       attributes: {
         selected: false,
         disabled: false,
-		optgroup: item.value == 'optgroup'
+		    optgroup: item.value == 'optgroup'
       }
     });
   });
@@ -110,24 +110,23 @@ NiceSelect.prototype.processData = function(data) {
 };
 
 NiceSelect.prototype.extractData = function() {
-  var options = this.el.querySelectorAll("option,optgroup");
-  var data = [];
-  var allOptions = [];
+  var options         = this.el.querySelectorAll("option,optgroup");
+  var data            = [];
+  var allOptions      = [];
   var selectedOptions = [];
 
   options.forEach(item => {
-	if(item.tagName == 'OPTGROUP'){
-		var itemData = {
-		  text: item.label,
-		  value: 'optgroup'
-		};
-	}else{
-		var itemData = {
-		  text: item.innerText,
-		  value: item.value
-		};
-
-	}
+    if(item.tagName == 'OPTGROUP'){
+      var itemData = {
+        text: item.label,
+        value: 'optgroup'
+      };
+    }else{
+      var itemData = {
+        text: item.innerText,
+        value: item.value
+      };
+    }
 
     var attributes = {
       selected: item.selected,
@@ -139,10 +138,12 @@ NiceSelect.prototype.extractData = function() {
     allOptions.push({ data: itemData, attributes: attributes });
   });
 
-  this.data = data;
-  this.options = allOptions;
+  this.data     = data;
+  this.options  = allOptions;
   this.options.forEach(function(item) {
-    if (item.attributes.selected) selectedOptions.push(item);
+    if (item.attributes.selected){
+      selectedOptions.push(item);
+    }
   });
 
   this.selectedOptions = selectedOptions;
@@ -156,19 +157,17 @@ NiceSelect.prototype.renderDropdown = function() {
     this.multiple ? "has-multiple" : ""
   ];
 
-  let searchHtml = `<div class="nice-select-search-box">
-<input type="text" class="nice-select-search" placeholder="Search..."/>
-</div>`;
+  let searchHtml = `<div class="nice-select-search-box">`;
+    searchHtml  += `<input type="text" class="nice-select-search" placeholder="${this.searchtext}..."/>`;
+  searchHtml  += `</div>`;
 
-  var html = `<div class="${classes.join(" ")}" tabindex="${
-    this.disabled ? null : 0
-  }">
-  <span class="${this.multiple ? "multiple-options" : "current"}"></span>
-  <div class="nice-select-dropdown">
-  ${this.config.searchable ? searchHtml : ""}
-  <ul class="list"></ul>
-  </div></div>
-`;
+  var html = `<div class="${classes.join(" ")}" tabindex="${this.disabled ? null : 0}">`;
+      html += `<span class="${this.multiple ? "multiple-options" : "current"}"></span>`;
+      html += `<div class="nice-select-dropdown">`;
+        html += `${this.config.searchable ? searchHtml : ""}`;
+        html += `<ul class="list"></ul>`;
+      html += `</div>`;
+  html += `</div>`;
 
   this.el.insertAdjacentHTML("afterend", html);
 
@@ -180,21 +179,19 @@ NiceSelect.prototype.renderDropdown = function() {
 NiceSelect.prototype._renderSelectedItems = function() {
   if (this.multiple) {
     var selectedHtml = "";
-    if(this.config.showSelectedItems || this.config.showSelectedItems || window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length <2){
+    if(this.config.showSelectedItems || this.config.showSelectedItems || window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length < 2){
       this.selectedOptions.forEach(function(item) {
         selectedHtml += `<span class="current">${item.data.text}</span>`;
       });
+
       selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
     }else{
-      selectedHtml = this.selectedOptions.length+' selected';
+      selectedHtml = this.selectedOptions.length+' '+this.selectedtext;
     }
 	
     this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
   } else {
-    var html =
-      this.selectedOptions.length > 0
-        ? this.selectedOptions[0].data.text
-        : this.placeholder;
+    var html = this.selectedOptions.length > 0 ? this.selectedOptions[0].data.text : this.placeholder;
 
     this.dropdown.querySelector(".current").innerHTML = html;
   }
@@ -208,20 +205,21 @@ NiceSelect.prototype._renderItems = function() {
 };
 
 NiceSelect.prototype._renderItem = function(option) {
-  var el = document.createElement("li");
-  el.innerHTML = option.data.text;
+  var el        = document.createElement("li");
+  el.innerHTML  = option.data.text;
+
   if(option.attributes.optgroup){
 	  el.classList.add('optgroup');
   }else{
- 	el.setAttribute("data-value", option.data.value);
-	var classList = [
-		"option",
-		option.attributes.selected ? "selected" : null,
-		option.attributes.disabled ? "disabled" : null,
-	];
-	
-	el.addEventListener("click", this._onItemClicked.bind(this, option));
-	el.classList.add(...classList);
+    el.setAttribute("data-value", option.data.value);
+    var classList = [
+      "option",
+      option.attributes.selected ? "selected" : null,
+      option.attributes.disabled ? "disabled" : null,
+    ];
+    
+    el.addEventListener("click", this._onItemClicked.bind(this, option));
+    el.classList.add(...classList);
   }
 
   option.element = el;
@@ -287,11 +285,12 @@ NiceSelect.prototype.bindEvent = function() {
 
 NiceSelect.prototype._bindSearchEvent = function() {
   var searchBox = this.dropdown.querySelector(".nice-select-search");
-  if (searchBox)
+  if (searchBox){
     searchBox.addEventListener("click", function(e) {
       e.stopPropagation();
       return false;
     });
+  }
 
   searchBox.addEventListener("input", this._onSearchChanged.bind(this));
 };
@@ -331,7 +330,7 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
         removeClass(optionEl, "selected");
         this.selectedOptions.splice(this.selectedOptions.indexOf(option), 1);
         this.el.querySelector(`option[value="${optionEl.dataset.value}"]`).removeAttribute('selected');
-	  }else{
+	    }else{
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
       }
@@ -368,7 +367,7 @@ NiceSelect.prototype.resetSelectValue = function() {
   if (this.multiple) {
     var select = this.el;
     this.selectedOptions.forEach(function(item) {
-      var el = select.querySelector('option[value="' + item.data.value + '"]');
+      var el = select.querySelector(`option[value="${item.data.value}"]`);
       if (el){
         el.removeAttribute("selected");
       }
