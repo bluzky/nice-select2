@@ -163,7 +163,7 @@ NiceSelect.prototype.renderDropdown = function() {
   ];
 
   let searchHtml = `<div class="nice-select-search-box">`;
-    searchHtml  += `<input type="text" class="nice-select-search" placeholder="${this.searchtext}..."/>`;
+    searchHtml  += `<input type="text" class="nice-select-search" placeholder="${this.searchtext}..." title="search"/>`;
   searchHtml  += `</div>`;
 
   var html = `<div class="${classes.join(" ")}" tabindex="${this.disabled ? null : 0}">`;
