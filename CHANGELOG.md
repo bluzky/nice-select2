@@ -5,6 +5,7 @@
 ### Added
 - support for direct attributes
 - invalid/valid class for form validation
+- modalopen and modalclose events #33
 
 ### Changed
 - layout
