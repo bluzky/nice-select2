@@ -129,9 +129,9 @@ NiceSelect.prototype.extractData = function() {
 	}
 
     var attributes = {
-      selected: item.getAttribute("selected") != null,
-      disabled: item.getAttribute("disabled") != null,
-	  optgroup: item.tagName == 'OPTGROUP'
+      selected: item.selected,
+      disabled: item.disabled,
+	    optgroup: item.tagName == 'OPTGROUP'
     };
 
     data.push(itemData);
@@ -179,14 +179,14 @@ NiceSelect.prototype.renderDropdown = function() {
 NiceSelect.prototype._renderSelectedItems = function() {
   if (this.multiple) {
     var selectedHtml = "";
-	if(window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length <2){
-		this.selectedOptions.forEach(function(item) {
-		  selectedHtml += `<span class="current">${item.data.text}</span>`;
-		});
-		selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
-	}else{
-		selectedHtml = this.selectedOptions.length+' selected';
-	}
+    if(this.config.showSelectedItems || window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length <2){
+      this.selectedOptions.forEach(function(item) {
+        selectedHtml += `<span class="current">${item.data.text}</span>`;
+      });
+      selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
+    }else{
+      selectedHtml = this.selectedOptions.length+' selected';
+    }
 	
     this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
   } else {
@@ -325,9 +325,9 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
   if (!hasClass(optionEl, "disabled")) {
     if (this.multiple) {
       if (hasClass(optionEl, "selected")) {
-		removeClass(optionEl, "selected");
-		this.selectedOptions.splice(this.selectedOptions.indexOf(option),1);
-		this.el.querySelector('option[value="' + optionEl.dataset.value + '"]').selected=false;
+        removeClass(optionEl, "selected");
+        this.selectedOptions.splice(this.selectedOptions.indexOf(option), 1);
+        this.el.querySelector(`option[value="${optionEl.dataset.value}"]`).removeAttribute('selected');
 	  }else{
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
@@ -350,10 +350,10 @@ NiceSelect.prototype.updateSelectValue = function() {
   if (this.multiple) {
     var select = this.el;
     this.selectedOptions.forEach(function(item) {
-      var el = select.querySelector('option[value="' + item.data.value + '"]');
+      var el = select.querySelector(`option[value="${item.data.value}"]`);
       if (el){
-		  el.setAttribute("selected", true);
-	  }
+        el.setAttribute("selected", true);
+      }
     });
   } else if (this.selectedOptions.length > 0) {
     this.el.value = this.selectedOptions[0].data.value;
