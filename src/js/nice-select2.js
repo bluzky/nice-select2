@@ -307,6 +307,7 @@ NiceSelect.prototype._bindSearchEvent = function() {
 };
 
 NiceSelect.prototype._onClicked = function(e) {
+  e.preventDefault();
 	if (this.multiple) {
 		this.dropdown.classList.add("open");
 	}else{
