@@ -143,13 +143,13 @@ NiceSelect.prototype.extractData = function() {
       var itemData = {
         text: item.innerText,
         value: item.value,
-        selected: item.getAttribute("selected") != null || this.el.value == item.value,
+        selected: item.getAttribute("selected") != null,
         disabled: item.getAttribute("disabled") != null
       };
     }
 
     var attributes = {
-      selected: item.selected,
+      selected: item.getAttribute("selected"),
       disabled: item.disabled,
 	    optgroup: item.tagName == 'OPTGROUP'
     };
