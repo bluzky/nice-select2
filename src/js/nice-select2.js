@@ -140,9 +140,14 @@ NiceSelect.prototype.extractData = function() {
         value: 'optgroup'
       };
     }else{
+      let text  = item.innerText;
+      if(item.dataset.display != undefined){
+        text  = item.dataset.display;
+      }
+
       var itemData = {
-        text: item.innerText,
-        value: item.value,
+        text:     text,
+        value:    item.value,
         selected: item.getAttribute("selected") != null,
         disabled: item.getAttribute("disabled") != null
       };
@@ -226,6 +231,7 @@ NiceSelect.prototype._renderItems = function() {
 
 NiceSelect.prototype._renderItem = function(option) {
   var el        = document.createElement("li");
+
   el.innerHTML  = option.data.text;
 
   if(option.attributes.optgroup){
@@ -511,9 +517,9 @@ NiceSelect.prototype._onSearchChanged = function(e) {
   } else if (open) {
     var matchReg = new RegExp(text);
     this.options.forEach(function(item) {
-      var optionText = item.data.text.toLowerCase();
-      var matched = matchReg.test(optionText);
-      item.element.style.display = matched ? "" : "none";
+      var optionText              = item.data.text.toLowerCase();
+      var matched                 = matchReg.test(optionText);
+      item.element.style.display  = matched ? "" : "none";
     });
   }
 
