@@ -9,6 +9,7 @@
 ### Fixed
 
 ### Updated
+- main entry in package json
 
 ## [v2.1.0] - 2023-01-14
 
