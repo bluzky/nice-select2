@@ -149,8 +149,8 @@ NiceSelect.prototype.extractData = function() {
     }
 
     var attributes = {
-      selected: item.getAttribute("selected"),
-      disabled: item.disabled,
+      selected: item.getAttribute("selected") != null,
+      disabled: item.getAttribute("disabled") != null,
 	    optgroup: item.tagName == 'OPTGROUP'
     };
 
