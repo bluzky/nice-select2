@@ -10,6 +10,7 @@
 
 ### Updated
 - main entry in package json
+- #48
 
 ## [v2.1.0] - 2023-01-14
 
