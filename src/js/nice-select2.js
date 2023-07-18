@@ -370,7 +370,10 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
         this.selectedOptions.push(option);
       }
     } else {
-      this.selectedOptions.forEach(function(item) {
+      this.options.forEach(function (item) {
+        removeClass(item.element, "selected");
+      });
+      this.selectedOptions.forEach(function (item) {
         removeClass(item.element, "selected");
       });
 
