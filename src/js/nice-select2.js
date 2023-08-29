@@ -332,9 +332,17 @@ NiceSelect.prototype._onClicked = function(e) {
 	if (!hasClass(this.dropdown, "open") ) {
 		addClass(this.dropdown, "open");
     triggerModalOpen(this.el);
-	}else if(!this.multiple){
-		removeClass(this.dropdown, "open");
-    triggerModalClose(this.el);
+	} else {
+		if (this.multiple) {
+		  if (e.target == this.dropdown.querySelector('.multiple-options')) {
+			removeClass(this.dropdown, "open");
+			triggerModalClose(this.el);
+		  }
+
+		} else {
+		  removeClass(this.dropdown, "open");
+		  triggerModalClose(this.el);
+		}
 	}
 
   if (hasClass(this.dropdown, "open")) {
