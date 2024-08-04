@@ -385,7 +385,9 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
       if (hasClass(optionEl, "selected")) {
         removeClass(optionEl, "selected");
         this.selectedOptions.splice(this.selectedOptions.indexOf(option), 1);
-        this.el.querySelector(`option[value="${optionEl.dataset.value}"]`).removeAttribute('selected');
+        var opt = this.el.querySelector(`option[value="${optionEl.dataset.value}"]`);
+        opt.removeAttribute('selected');
+        delete(opt.selected);
 	    }else{
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
@@ -406,6 +408,63 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
     this.updateSelectValue();
   }
 };
+
+NiceSelect.prototype.setValue = function(value){
+
+    var select = this.el,noSelected = true,currentValue;
+    if(select.multiple){
+        for(var i = 0; i < value.length; i++){
+            value[i] += ''; //-- stringify value[data] to match indexOf 
+        }
+    }    
+    
+    for(var opt of select.options){
+        if(select.multiple){
+            if(value.indexOf(opt.value) > -1){ //-- expect Array like [1,2,3]
+                currentValue = opt.value;
+            }else{
+                currentValue = null;
+            }
+        }else{
+            currentValue = value;
+        }
+            
+        if(opt.value == currentValue && !opt.disabled){
+            if(noSelected){
+                select.value = currentValue;
+                noSelected = false;
+            }
+            opt.setAttribute('selected',true);
+            opt.selected = true;
+        }else{
+            opt.removeAttribute('selected');
+            delete(opt.selected);
+        }
+    }
+    if(noSelected && !select.multiple){
+        select.options[0].setAttribute('selected',true);
+        select.options[0].selected = true;
+        select.value = select.options[0].value;
+    }
+    
+    this.update();
+}
+
+NiceSelect.prototype.getValue = function(){
+    var select = this.el;
+    if(!select.multiple){
+        return select.value;
+    }
+    
+    //-- multiple
+    var values = [];
+    for(var opt of select.options){
+        if(opt.selected){
+            values.push(opt.value);
+        }
+    }
+    return values;
+}
 
 NiceSelect.prototype.updateSelectValue = function() {
   if (this.multiple) {
@@ -429,6 +488,7 @@ NiceSelect.prototype.resetSelectValue = function() {
       var el = select.querySelector(`option[value="${item.data.value}"]`);
       if (el){
         el.removeAttribute("selected");
+        delete(el.selected);
       }
     });
   } else if (this.selectedOptions.length > 0) {
