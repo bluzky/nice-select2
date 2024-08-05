@@ -414,7 +414,7 @@ NiceSelect.prototype.setValue = function(value){
     var select = this.el,noSelected = true,currentValue;
     if(select.multiple){
         for(var i = 0; i < value.length; i++){
-            value[i] += ''; //-- stringify value[data] to match indexOf 
+            value[i] = String(value[i]);
         }
     }    
     
