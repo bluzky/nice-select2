@@ -387,7 +387,7 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
         this.selectedOptions.splice(this.selectedOptions.indexOf(option), 1);
         var opt = this.el.querySelector(`option[value="${optionEl.dataset.value}"]`);
         opt.removeAttribute('selected');
-        delete(opt.selected);
+        opt.selected = false;
 	    }else{
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
