@@ -102,6 +102,7 @@ NiceSelect.prototype.create = function() {
   this.el.style.width     = "0";
   this.el.style.padding   = "0";
   this.el.style.height    = "0";
+  this.el.style.fontSize  = "0";
   if (this.data) {
     this.processData(this.data);
   } else {
@@ -148,6 +149,7 @@ NiceSelect.prototype.extractData = function() {
       var itemData = {
         text:     text,
         value:    item.value,
+        extra:    item.dataset.extra,
         selected: item.getAttribute("selected") != null,
         disabled: item.getAttribute("disabled") != null
       };
@@ -234,6 +236,10 @@ NiceSelect.prototype._renderItem = function(option) {
 
   el.innerHTML  = option.data.text;
 
+  if(option.data.extra != undefined) {
+    el.appendChild(this._renderItemExtra(option.data.extra));
+  }
+
   if(option.attributes.optgroup){
 	  addClass(el, 'optgroup');
   }else{
@@ -251,6 +257,13 @@ NiceSelect.prototype._renderItem = function(option) {
   option.element = el;
   return el;
 };
+
+NiceSelect.prototype._renderItemExtra = function(content) {
+  var el = document.createElement("span");
+  el.innerHTML = content;
+  addClass(el, "extra");
+  return el;
+}
 
 NiceSelect.prototype.update = function() {
   this.extractData();
