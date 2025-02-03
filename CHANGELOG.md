@@ -3,6 +3,7 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+- warning message when select option has no value
 
 ### Changed
 
