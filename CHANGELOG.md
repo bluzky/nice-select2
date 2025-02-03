@@ -9,6 +9,18 @@
 ### Fixed
 
 ### Updated
+
+## [v.2.1.3] - 2025-02-03
+
+
+### Added
+- warning message when select option has no value
+
+### Changed
+
+### Fixed
+
+### Updated
 - main entry in package json
 - #48
 
