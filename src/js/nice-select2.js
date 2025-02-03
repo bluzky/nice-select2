@@ -1,39 +1,52 @@
 import "../scss/nice-select2.scss";
 
 // utility functions
+// utility functions
 function triggerClick(el) {
-  var event = document.createEvent("MouseEvents");
-  event.initEvent("click", true, false);
+  const event = new MouseEvent("click", {
+    bubbles: true,
+    cancelable: false,
+  });
   el.dispatchEvent(event);
 }
 
 function triggerChange(el) {
-  var event = document.createEvent("HTMLEvents");
-  event.initEvent("change", true, false);
+  const event = new Event("change", {
+    bubbles: true,
+    cancelable: false,
+  });
   el.dispatchEvent(event);
 }
 
 function triggerFocusIn(el) {
-  var event = document.createEvent("FocusEvent");
-  event.initEvent("focusin", true, false);
+  const event = new FocusEvent("focusin", {
+    bubbles: true,
+    cancelable: false,
+  });
   el.dispatchEvent(event);
 }
 
 function triggerFocusOut(el) {
-  var event = document.createEvent("FocusEvent");
-  event.initEvent("focusout", true, false);
+  const event = new FocusEvent("focusout", {
+    bubbles: true,
+    cancelable: false,
+  });
   el.dispatchEvent(event);
 }
 
 function triggerModalOpen(el) {
-  var event = document.createEvent("UIEvent");
-  event.initEvent("modalopen", true, false);
+  const event = new UIEvent("modalopen", {
+    bubbles: true,
+    cancelable: false,
+  });
   el.dispatchEvent(event);
 }
 
 function triggerModalClose(el) {
-  var event = document.createEvent("UIEvent");
-  event.initEvent("modalclose", true, false);
+  const event = new UIEvent("modalclose", {
+    bubbles: true,
+    cancelable: false,
+  });
   el.dispatchEvent(event);
 }
 
