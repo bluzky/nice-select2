@@ -9,6 +9,7 @@
 ### Fixed
 
 ### Updated
+- replaced iniEvent thanks @Cypaaa
 
 ## [v.2.1.3] - 2025-02-03
 
