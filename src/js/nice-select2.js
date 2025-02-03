@@ -348,13 +348,13 @@ NiceSelect.prototype._onClicked = function(e) {
 	} else {
 		if (this.multiple) {
 		  if (e.target == this.dropdown.querySelector('.multiple-options')) {
-			removeClass(this.dropdown, "open");
-			triggerModalClose(this.el);
+			 removeClass(this.dropdown, "open");
+			 triggerModalClose(this.el);
 		  }
 
 		} else {
-		  removeClass(this.dropdown, "open");
-		  triggerModalClose(this.el);
+		   removeClass(this.dropdown, "open");
+		   triggerModalClose(this.el);
 		}
 	}
 
@@ -473,6 +473,8 @@ NiceSelect.prototype.updateSelectValue = function() {
       var el = select.querySelector(`option[value="${item.data.value}"]`);
       if (el){
         el.setAttribute("selected", true);
+      }else{
+        console.error("Option not found, does it have a value?");
       }
     });
   } else if (this.selectedOptions.length > 0) {
