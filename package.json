@@ -8,15 +8,15 @@
   },
   "dependencies": {
     "cross-env": "^7.0.3",
-    "css-loader": "^6.7.3"
+    "css-loader": "^7.1.2"
   },
   "devDependencies": {
-    "mini-css-extract-plugin": "^2.4.5",
-    "sass": "^1.45.1",
-    "sass-loader": "^12.4.0",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.83.4",
+    "sass-loader": "^16.0.4",
     "shx": "^0.3.4",
-    "webpack": "^5.65.0",
-    "webpack-cli": "^4.9.1"
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   },
   "scripts": {
     "watch": "webpack --watch --progress",
