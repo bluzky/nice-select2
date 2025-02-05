@@ -1,3 +1,27 @@
+@use "sass:color";
+@use "./prism" with (
+  $gray_dark: #445870,
+  $gray_lighter: #f6f7f9,
+  $gray: #90a1b5,
+  $blue: #55a1fb
+);
+// Default variables
+$font_size: 14px !default;
+$font_size_small: 12px !default;
+
+$input_border_radius: 5px !default;
+$input_height: 38px !default;
+$input_height_small: 36px !default;
+$dropdown_padding: 18px !default;
+
+$gray_dark: #444 !default;
+$gray: #999 !default;
+$gray_light: #e8e8e8 !default;
+$gray_lighter: #f6f6f6 !default;
+$primary_light: $gray !default;
+$arrow_color: $gray !default;
+
+// Override defaults
 $gray_dark: #445870;
 $gray: #90a1b5;
 $gray_light: #e0e7ee;
@@ -7,26 +31,9 @@ $blue_light: #88bfff;
 $primary: $blue;
 $primary_light: $blue_light;
 
-// Default variables
-$font_size: 14px !default;
-$font_size_small: 12px !default;
-
-$input_border_radius: 5px !default;
-$input_height: 38px;
-$input_height_small: 36px !default;
-$dropdown_padding: 18px !default;
-
-$gray_dark: #444 !default;
-$gray: #999 !default;
-$gray_light: #e8e8e8 ;
-$gray_lighter: #f6f6f6 !default;
-$primary_light: $gray !default;
-$arrow_color: $gray !default;
-
-@import "./prism";
-
 @mixin clearfix() {
-  &:before, &:after {
+  &:before,
+  &:after {
     content: "";
     display: table;
   }
@@ -39,7 +46,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $gray_dark;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   font-size: 14px;
   font-weight: normal;
   letter-spacing: -0.25px;
@@ -67,7 +74,7 @@ h2 {
 }
 
 h3 {
-  font-size: 18px;  
+  font-size: 18px;
   font-weight: 400;
   margin: 0 0 12px;
   padding-top: 12px;
@@ -85,13 +92,15 @@ a:not(.button) {
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   border-bottom: 1px solid transparent;
-  &:hover, &:focus {
+
+  &:hover,
+  &:focus {
     border-bottom: 1px solid $primary_light;
   }
 }
 
 ::selection {
-  background: darken($gray_lighter, 1%);
+  background: color.adjust($gray_lighter, $lightness: -1%);
 }
 
 .container {
@@ -113,6 +122,7 @@ label {
   margin: 0 2px 4px;
   text-transform: uppercase;
   float: left;
+
   &.right {
     float: right;
   }
@@ -138,40 +148,50 @@ label {
   transition: all 0.2s ease-in-out;
   white-space: nowrap;
   width: auto;
-  &:hover, &:focus {
-    background-color: darken($primary, 4%);
+
+  &:hover,
+  &:focus {
+    background-color: color.adjust($primary, $lightness: -4%);
   }
+
   &:active {
-    background-color: darken($primary, 8%);
+    background-color: color.adjust($primary, $lightness: -8%);
   }
+
   &.light {
     background-color: #fff;
     border: 1px solid $gray_light;
     color: $primary;
     line-height: $input_height - 2;
     margin-left: 24px;
+
     &:hover {
-      border-color: darken($gray_light, 5%);
+      border-color: color.adjust($gray_light, $lightness: -5%);
     }
-    &:active, &:focus {
+
+    &:active,
+    &:focus {
       border-color: $primary_light;
     }
   }
+
   @media screen and (max-width: 360px) {
     width: 100%;
+
     &.light {
       margin: 18px 0 0;
     }
   }
 }
 
-
 .header {
-  text-align: center;	
+  text-align: center;
   margin-bottom: 60px;
+
   @media screen and (min-width: 600px) {
     padding: 0 18px;
   }
+
   p {
     color: $gray;
     font-size: 18px;
@@ -181,6 +201,7 @@ label {
 
 .footer {
   text-align: center;
+
   p {
     margin-bottom: 90px;
   }
