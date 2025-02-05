@@ -14,7 +14,8 @@ module.exports = {
       type: "umd",
     },
   },
-  devtool: "source-map",
+  devtool:
+    process.env.NODE_ENV === "production" ? "source-map" : "eval-source-map",
   optimization: {
     usedExports: true,
   },
