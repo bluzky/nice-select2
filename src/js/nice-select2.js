@@ -44,6 +44,12 @@ const defaultOptions = {
 
 class NiceSelect {
   constructor(element, options = {}) {
+    if (!element) {
+      throw new Error('No element provided to NiceSelect');
+    }
+    if (!(element instanceof Element)) {
+      throw new Error('Invalid element provided to NiceSelect - must be a valid DOM element');
+    }
     this.el = element;
     this.config = { ...defaultOptions, ...options };
     this.data = this.config.data;
