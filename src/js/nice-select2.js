@@ -340,8 +340,21 @@ class NiceSelect {
   setValue(value) {
     const select = this.el;
     let noSelected = true;
+
+    // Validate input type
     if (select.multiple) {
+      if (!Array.isArray(value)) {
+        throw new Error('setValue expects an array for multiple select elements');
+      }
       value = value.map(String);
+    } else {
+      if (Array.isArray(value)) {
+        throw new Error('setValue expects a single value for non-multiple select elements');
+      }
+      if (value !== null && value !== undefined && typeof value !== 'string' && typeof value !== 'number') {
+        throw new Error('setValue expects a string or number for non-multiple select elements');
+      }
+      value = String(value);
     }
     for (const opt of select.options) {
       const currentValue = select.multiple
