@@ -16,6 +16,7 @@
 
 ### Updated
 - module not recognized (#57)
+- show original select on destroy
 
 ## [2.3.1] - 2025-02-03
 
