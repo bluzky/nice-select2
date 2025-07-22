@@ -59,6 +59,7 @@ class NiceSelect {
     this.searchtext       = attr(this.el, "searchtext") || this.config.searchtext;
     this.selectedtext     = attr(this.el, "selectedtext") || this.config.selectedtext;
     this.dropdown         = null;
+    this.selectionList    = null;
     this.multiple         = attr(this.el, "multiple");
     this.disabled         = attr(this.el, "disabled");
     this.create();
@@ -282,6 +283,10 @@ class NiceSelect {
   }
 
   destroy() {
+    if(this.selectionList){
+      this.selectionList.remove();
+    }
+    
     if (this.dropdown) {
       this.dropdown.remove();
       this.el.style.display = "";
@@ -614,14 +619,12 @@ class NiceSelect {
       return;
     }
 
-    let ul      = this.el.parentElement.querySelector('.select-selection-list');
+    if(this.selectionList == null){
+      this.selectionList	 		= document.createElement('ul');
+      this.selectionList.classList.add('select-selection-list');
 
-    if(ul == null){
-      ul	 		= document.createElement('ul');
-      ul.classList.add('select-selection-list');
-
-      this.el.after(ul);
-    }else if(ul.querySelector(`[data-value="${option.data.value}"]`) != null){
+      this.el.after(this.selectionList);
+    }else if(this.selectionList.querySelector(`[data-value="${option.data.value}"]`) != null){
       return;
     }
 
@@ -641,7 +644,7 @@ class NiceSelect {
 
     li.innerHTML	= html;
 
-    ul.appendChild(li);
+    this.selectionList.appendChild(li);
 
     li.querySelectorAll('.remove-select-selection').forEach(el=> el.addEventListener("click", this._multipleListRemove.bind(this)));
   }
