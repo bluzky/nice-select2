@@ -525,7 +525,7 @@ class NiceSelect {
 
   _onKeyPressed(e) {
     const focusedOption = this.dropdown.querySelector(".focus");
-    const isOpen = hasClass(this.dropdown, "open");
+    const isOpen        = hasClass(this.dropdown, "open");
 
     if (e.keyCode === 13) {
       isOpen ? triggerClick(focusedOption) : triggerClick(this.dropdown);
@@ -555,6 +555,11 @@ class NiceSelect {
       triggerClick(this.dropdown);
     } else if (e.keyCode === 32 && isOpen) {
       return false;
+    }
+
+    const focus = this.dropdown.querySelector('.focus');
+    if (focus) {
+      focus.scrollIntoView({ block: 'center' });
     }
 
     return false;
