@@ -7,6 +7,7 @@
 - focus function (#49)
 - min-height property to select (#59)
 - store selection list in atribute
+- update original select (#78)
 
 ### Changed
 - udate selected options on select element (#61)
