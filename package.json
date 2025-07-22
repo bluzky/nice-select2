@@ -37,5 +37,6 @@
   "bugs": {
     "url": "https://github.com/bluzky/nice-select2/issues"
   },
-  "homepage": "https://github.com/bluzky/nice-select2#readme"
+  "homepage": "https://github.com/bluzky/nice-select2#readme",
+  "module": "dist/js/nice-select2.js"
 }
