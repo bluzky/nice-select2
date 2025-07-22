@@ -10,8 +10,8 @@
 
   <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,600&Inconsolata:400,700' rel='stylesheet"
     type="text/css">
-  <link rel="stylesheet" href="dist/css/style.css">
-  <link rel="stylesheet" href="dist/css/nice-select2.css">
+  <link rel="stylesheet" href="../dist/css/style.css">
+  <link rel="stylesheet" href="../dist/css/nice-select2.css">
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-40665301-3"></script>
@@ -118,15 +118,32 @@
     <p>Updates the custom dropdown to reflect any changes made to the original select element.</p>
 
     <pre><code class="language-js">var options = {searchable: true};
-    NiceSelect.bind(document.getElementById("seachable-select"), options);</code></pre>
+    NiceSelect.bind(document.getElementById("searchable-select"), options);</code></pre>
 
     <div class="box">
-      <select id="seachable-select">
+      <select id="searchable-select">
         <option data-display="Select">Nothing</option>
         <option value="1">Some option</option>
         <option value="2">Another option</option>
         <option value="3" disabled>A disabled option</option>
         <option value="4">Potato</option>
+      </select>
+    </div>
+
+    <h2>Multi Select options</h2>
+
+    <p>Updates the custom dropdown to reflect any changes made to the original select element.</p>
+
+    <pre><code class="language-js">var options = {searchable: true};
+    NiceSelect.bind(document.getElementById("multiple-select"), options);</code></pre>
+
+    <div class="box">
+      <select id="multiple-select" multiple="" required>
+        <option data-display="Select">Nothing</option>
+        <option value="1">Some option</option>
+        <option value="2" selected>Another option</option>
+        <option value="3" disabled>A disabled option</option>
+        <option value="4" selected>Potato</option>
       </select>
     </div>
 
@@ -240,7 +257,7 @@
 
   </div>
 
-  <script src="dist/js/nice-select2.js"></script>
+  <script src="../dist/js/nice-select2.js"></script>
   <script src="demo/fastclick.js"></script>
   <script src="demo/prism.js"></script>
 
@@ -253,9 +270,13 @@
         NiceSelect.bind(select);
       });
 
-      // seachable 
+      // searchable 
       const seachableOptions = { searchable: true };
-      NiceSelect.bind(document.getElementById("seachable-select"), seachableOptions);
+      NiceSelect.bind(document.getElementById("searchable-select"), seachableOptions);
+
+      // multiple 
+      const multipleOptions = { searchable: true };
+      NiceSelect.bind(document.getElementById("multiple-select"), seachableOptions);
 
 
       //translated-select 

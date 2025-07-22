@@ -66,14 +66,14 @@ class NiceSelect {
   }
 
   create() {
-    Object.assign(this.el.style, {
+    /* Object.assign(this.el.style, {
       opacity: "0",
       width: "0",
       padding: "0",
       height: "0",
       fontSize: "0",
       minHeight: "auto",
-    });
+    }); */
 
     this.data ? this.processData(this.data) : this.extractData();
     this.renderDropdown();
@@ -340,8 +340,24 @@ class NiceSelect {
     }
   }
 
-  updateSelect(){
-    console.log('test');
+  updateSelect(target){
+
+    const selected = Array.from(this.el.selectedOptions);
+
+    for (const option of Array.from(this.el.options)) {
+      console.log(option);
+      console.log(option.selected);
+      if (selected.includes(option)) {
+        option.selected = true;
+        option.setAttribute("selected", "selected");
+      } else {
+        option.selected = false;
+        option.removeAttribute("selected");
+
+        this._multipleListRemove(option);
+      }
+    }
+
     this.update();
   }
 
@@ -351,7 +367,7 @@ class NiceSelect {
     this.dropdown.addEventListener("focusin", () => triggerFocusIn(this.el));
     this.dropdown.addEventListener("focusout", () => triggerFocusOut(this.el));
     this.el.addEventListener("invalid", () => this._triggerValidationMessage("invalid"));
-    this.el.addEventListener("change", () => this.updateSelect());
+    this.el.addEventListener("change", (e) => this.updateSelect(e.target));
     window.addEventListener("click", (e) => this._onClickedOutside(e));
 
     if (this.config.searchable) this._bindSearchEvent();
@@ -380,9 +396,11 @@ class NiceSelect {
           this.selectedOptions = this.selectedOptions.filter(
             (item) => item !== option
           );
+
           const opt = this.el.querySelector(
             `option[value="${optionEl.dataset.value}"]`
           );
+
           if (opt) {
             opt.removeAttribute("selected");
             opt.selected = false;
@@ -666,7 +684,8 @@ class NiceSelect {
       target  = target.target;
     }
 
-    if(target.data == undefined){
+    // Close button clicked
+    if(target.matches('.remove-select-selection')){
       target.closest('li.select-selection').remove();
 
       let parent  = target.closest('li.select-selection');
@@ -681,26 +700,24 @@ class NiceSelect {
         }
 
         this._renderSelectedItems();
-      })
-
-      return;
-    }
-
-    if(target.element.classList.contains('selected')){
-      console.log(target);
-      return;
-    }
-
-    let parent  = this.el.parentElement;
+      });
     
-    let ul      = parent.querySelector('.select-selection-list');
-    
-    target  = ul.querySelector(`[data-value="${target.data.value}"]`);
+    // Deselected in dropdown or Deselected from original select
+    }else{
+      if(target.element != undefined && target.element.classList.contains('selected')){
+        return;
+      }
 
-    if(ul != null && target != null){
-      target.remove();
+      let parent  = this.el.parentElement;
+      
+      let ul      = parent.querySelector('.select-selection-list');
+      
+      let selection  = Array.from(ul.querySelectorAll('li span')).find(el => el.textContent === target.innerText);
+
+      if(ul != null && selection != null){
+        selection.closest('li').remove();
+      }
     }
-
   }
 }
 
