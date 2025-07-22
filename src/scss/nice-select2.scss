@@ -27,7 +27,8 @@ $arrow_color: $gray !default;
   clear: both;
   cursor: pointer;
   display: block;
-  float: left;
+  // float: left;
+  width: fit-content;
   font-family: inherit;
   font-size: $font_size;
   font-weight: normal;
@@ -41,7 +42,6 @@ $arrow_color: $gray !default;
   transition: all 0.2s ease-in-out;
   user-select: none;
   white-space: nowrap;
-  width: auto;
 
   &:hover {
     border-color: color.adjust($gray_light, $lightness: -5%);
@@ -136,16 +136,16 @@ $arrow_color: $gray !default;
     transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25), opacity 0.15s ease-out;
     z-index: 9;
     opacity: 0;
+    max-height: 230px;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   // List and options
   .list {
     border-radius: $input_border_radius;
     box-sizing: border-box;
-    overflow: hidden;
     padding: 0;
-    max-height: 210px;
-    overflow-y: auto;
 
     &:hover .option:not(:hover) {
       background-color: transparent !important;

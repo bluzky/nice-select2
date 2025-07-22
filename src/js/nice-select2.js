@@ -330,7 +330,8 @@ class NiceSelect {
   }
 
   updateSelect(){
-    
+    console.log('test');
+    this.update();
   }
 
   bindEvent() {
