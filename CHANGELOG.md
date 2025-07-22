@@ -4,6 +4,7 @@
 
 ### Added
 - multi select value & quick edit
+- focus function
 
 ### Changed
 
