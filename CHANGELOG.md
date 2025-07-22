@@ -3,6 +3,7 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+- multi select value & quick edit
 
 ### Changed
 
