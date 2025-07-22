@@ -329,12 +329,17 @@ class NiceSelect {
     }
   }
 
+  updateSelect(){
+    
+  }
+
   bindEvent() {
     this.dropdown.addEventListener("click", (e) => this._onClicked(e));
     this.dropdown.addEventListener("keydown", (e) => this._onKeyPressed(e));
     this.dropdown.addEventListener("focusin", () => triggerFocusIn(this.el));
     this.dropdown.addEventListener("focusout", () => triggerFocusOut(this.el));
     this.el.addEventListener("invalid", () => this._triggerValidationMessage("invalid"));
+    this.el.addEventListener("change", () => this.updateSelect());
     window.addEventListener("click", (e) => this._onClickedOutside(e));
 
     if (this.config.searchable) this._bindSearchEvent();
@@ -388,7 +393,9 @@ class NiceSelect {
 
         this.selectedOptions = [option];
       }
+
       this._renderSelectedItems();
+
       this.updateSelectValue();
     }
   }
@@ -455,19 +462,27 @@ class NiceSelect {
   }
 
   updateSelectValue() {
-    if (this.multiple) {
-      const select = this.el;
-      this.selectedOptions.forEach((item) => {
-        const el = select.querySelector(`option[value="${item.data.value}"]`);
-        if (el) {
-          el.setAttribute("selected", true);
-        } else {
-          console.error("Option not found, does it have a value?");
-        }
-      });
-    } else if (this.selectedOptions.length > 0) {
+    if (this.selectedOptions.length > 0) {
       this.el.value = this.selectedOptions[0].data.value;
     }
+
+    const select = this.el;
+
+    // FIrst mark all options as not selected
+    select.querySelectorAll("option").forEach(function (item) {
+      item.removeAttribute("selected");
+    });
+
+    // Mark the selected options as selected in the select element
+    this.selectedOptions.forEach( item => {
+      let el = select.querySelector(`option[value="${item.data.value}"]`);
+
+      if (el){
+        //Change it, cause it works more correctly.
+        el.setAttribute("selected", "selected");
+        el.selected = true;
+      }
+    });
 
     triggerChange(this.el);
   }
