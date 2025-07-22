@@ -5,6 +5,7 @@
 ### Added
 - multi select value & quick edit
 - focus function (#49)
+- min-height property to select (#59)
 
 ### Changed
 
