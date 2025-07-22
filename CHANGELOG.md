@@ -8,6 +8,7 @@
 - min-height property to select (#59)
 
 ### Changed
+- udate selected options on select element (#61)
 
 ### Fixed
 
