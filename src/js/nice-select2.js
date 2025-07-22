@@ -71,6 +71,7 @@ class NiceSelect {
       padding: "0",
       height: "0",
       fontSize: "0",
+      minHeight: "auto",
     });
 
     this.data ? this.processData(this.data) : this.extractData();
