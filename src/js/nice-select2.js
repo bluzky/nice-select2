@@ -90,7 +90,7 @@ function removeClass(el, className) {
 var defaultOptions = {
   data: null,
   searchable: false,
-  showSelectedItems: true
+  showSelectedItems: false
 };
 
 export default function NiceSelect(element, options) {
@@ -212,23 +212,16 @@ NiceSelect.prototype.renderDropdown = function() {
   this.el.insertAdjacentHTML("afterend", html);
 
   this.dropdown = this.el.nextElementSibling;
-
   this._renderSelectedItems();
   this._renderItems();
 };
 
-NiceSelect.prototype._renderSelectedItems = function() { 
+NiceSelect.prototype._renderSelectedItems = function() {
   if (this.multiple) {
-    let selectedHtml = "";
-
-    if(window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length < 2){
-      this.selectedOptions.forEach( (item, index, array) => {
-        let text  = item.data.text;
-        if(index !== array.length -1 ){
-          text += `, `;
-        }
-
-        selectedHtml += `<span class="current">${text}</span>`;
+    var selectedHtml = "";
+    if(this.config.showSelectedItems || this.config.showSelectedItems || window.getComputedStyle(this.dropdown).width == 'auto' || this.selectedOptions.length < 2){
+      this.selectedOptions.forEach(function(item) {
+        selectedHtml += `<span class="current">${item.data.text}</span>`;
       });
 
       selectedHtml = selectedHtml == "" ? this.placeholder : selectedHtml;
@@ -238,7 +231,7 @@ NiceSelect.prototype._renderSelectedItems = function() {
 	
     this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
   } else {
-    let html = this.selectedOptions.length > 0 ? this.selectedOptions[0].data.text : this.placeholder;
+    var html = this.selectedOptions.length > 0 ? this.selectedOptions[0].data.text : this.placeholder;
 
     this.dropdown.querySelector(".current").innerHTML = html;
   }
@@ -246,12 +239,7 @@ NiceSelect.prototype._renderSelectedItems = function() {
 
 NiceSelect.prototype._renderItems = function() {
   var ul = this.dropdown.querySelector("ul");
-
   this.options.forEach(item => {
-    if(this.multiple && this.config.showSelectedItems){
-      this._multipleListAdd(item);
-    }
-    
     ul.appendChild(this._renderItem(item));
   });
 };
@@ -326,7 +314,6 @@ NiceSelect.prototype.enable = function() {
 NiceSelect.prototype.clear = function() {
   this.resetSelectValue();
   this.selectedOptions = [];
-
   this._renderSelectedItems();
   this.update();
 
@@ -341,6 +328,7 @@ NiceSelect.prototype.destroy = function() {
 };
 
 NiceSelect.prototype.bindEvent = function() {
+  var $this = this;
   this.dropdown.addEventListener("click", this._onClicked.bind(this));
   this.dropdown.addEventListener("keydown", this._onKeyPressed.bind(this));
   this.dropdown.addEventListener("focusin", triggerFocusIn.bind(this, this.el));
@@ -413,16 +401,9 @@ NiceSelect.prototype._onItemClicked = function(option, e) {
         var opt = this.el.querySelector(`option[value="${optionEl.dataset.value}"]`);
         opt.removeAttribute('selected');
         opt.selected = false;
-
-        this._multipleListRemove(option);
 	    }else{
         addClass(optionEl, "selected");
         this.selectedOptions.push(option);
-
-        if(this.config.showSelectedItems){
-          option.attributes.selected = true;
-          this._multipleListAdd(option);
-        }
       }
     } else {
       this.options.forEach(function (item) {
@@ -500,9 +481,9 @@ NiceSelect.prototype.getValue = function(){
 
 NiceSelect.prototype.updateSelectValue = function() {
   if (this.multiple) {
-    let select = this.el;
-    this.selectedOptions.forEach( item => {
-      let el = select.querySelector(`option[value="${item.data.value}"]`);
+    var select = this.el;
+    this.selectedOptions.forEach(function(item) {
+      var el = select.querySelector(`option[value="${item.data.value}"]`);
       if (el){
         el.setAttribute("selected", true);
       }else{
@@ -648,87 +629,6 @@ NiceSelect.prototype._onSearchChanged = function(e) {
   var firstEl = this._findNext(null);
   addClass(firstEl, "focus");
 };
-
-NiceSelect.prototype._multipleListAdd = function (option) {
-  
-  if(option.data.disabled || option.data.value == "" || !option.attributes.selected){
-    return;
-  }
-
-  let ul      = this.el.parentElement.querySelector('.select-selection-list');
-
-  if(ul == null){
-    ul	 		= document.createElement('ul');
-	  ul.classList.add('select-selection-list');
-
-    this.el.after(ul);
-  }else if(ul.querySelector(`[data-value="${option.data.value}"]`) != null){
-    return;
-  }
-
-	let li	 		= document.createElement('li');
-	li.classList.add('select-selection');
-
-  li.dataset.value = option.data.value;
-
-	let html	  = `
-    <button type="button" class="small remove-select-selection">
-      <span class='remove-select-selection'>×</span>
-    </button>
-  `;
-
-	// Add
-	html   += `<span class='selected-name'>${option.data.text}</span>`
-
-	li.innerHTML	= html;
-
-	ul.appendChild(li);
-
-  li.querySelectorAll('.remove-select-selection').forEach(el=> el.addEventListener("click", this._multipleListRemove.bind(this)));
-}
-
-NiceSelect.prototype._multipleListRemove = function (target) {
-
-  if(target.target != null){
-    target  = target.target;
-  }
-
-  if(target.data == undefined){
-    target.closest('li.select-selection').remove();
-
-    let parent  = target.closest('li.select-selection');
-
-    this.selectedOptions.forEach(option => {
-      if(option.data.value == parent.dataset.value){
-        removeClass(option.element, "selected");
-        this.selectedOptions.splice(this.selectedOptions.indexOf(option), 1);
-        var opt = this.el.querySelector(`option[value="${option.data.value}"]`);
-        opt.removeAttribute('selected');
-        opt.selected = false;
-      }
-
-      this._renderSelectedItems();
-    })
-
-    return;
-  }
-
-  if(target.element.classList.contains('selected')){
-    console.log(target);
-    return;
-  }
-
-  let parent  = this.el.parentElement;
-  
-  let ul      = parent.querySelector('.select-selection-list');
-  
-  target  = ul.querySelector(`[data-value="${target.data.value}"]`);
-
-  if(ul != null && target != null){
-    target.remove();
-  }
-
-}
 
 export function bind(el, options) {
   return new NiceSelect(el, options);
