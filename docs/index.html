@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
   <meta charset="utf-8">
@@ -7,54 +8,55 @@
 
   <title>Vanilla Javascript Nice Select2</title>
 
-  <link href='https://fonts.googleapis.com/css?family=Work+Sans:300,400,600&Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,600&Inconsolata:400,700' rel='stylesheet"
+    type="text/css">
   <link rel="stylesheet" href="dist/css/style.css">
   <link rel="stylesheet" href="dist/css/nice-select2.css">
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40665301-3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-40665301-3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'UA-40665301-3');
-</script>
+    gtag('config', 'UA-40665301-3');
+  </script>
 
 </head>
 
 <body>
 
   <div class="container">
-  
-    <div class="header">      
+
+    <div class="header">
       <h1> Nice Select 2</h1>
-      
+
       <p>A lightweight vanilla javascript library that replaces native select elements with customizable dropdowns.</p>
-      
+
       <a href="https://github.com/bluzky/nice-select2/releases" class="button">Download</a>
       <a href="https://github.com/bluzky/nice-select2" class="button light">View on GitHub</a>
     </div>
 
     <h2>Usage</h2>
     <p><strong>1.</strong> Include the library.</p>
-    
+
     <pre><code class="language-html">&lt;script src=&quot;path/to/nice-select2.js&quot;&gt;&lt;/script&gt;</code></pre>
-    
+
     <p><strong>2.</strong> Include the plugin styles, either the compiled CSS...</p>
-    
+
     <pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;path/to/nice-select2.css&quot;&gt;</code></pre>
 
     <p>...or, ideally, import the SASS source (if you use SASS) in your main stylesheet for easier customization.</p>
-    
+
     <pre><code class="language-scss">@import 'nice-select2'; // Or 'nice-select-prefixed'. See 'Notes' section.</code></pre>
-    
+
     <p><strong>3.</strong> Finally, initialize the plugin.</p>
-    
+
     <pre><code class="language-js">NiceSelect.bind(document.getElementById("#a-select"));</code></pre>
-    
+
     <p>All done. That will turn this:</p>
-    
+
     <div class="box">
       <select class="ignore">
         <option value="1">Some option</option>
@@ -63,11 +65,11 @@
         <option value="4">Potato</option>
       </select>
     </div>
-    
+
     <p>...into this:</p>
-    
+
     <div class="box">
-      <select class="selectize"  multiple='multiple'>
+      <select class="selectize" multiple="multiple">
         <option value="1">Some option</option>
         <option value="2">Another option</option>
         <option value="3" disabled>A disabled option</option>
@@ -82,14 +84,16 @@
         <option value="4">Potato</option>
       </select>
     </div>
-    
-    <p>There are no settings (a native select doesn't have settings), although there are a couple of special features, documented below.</p>
-    
+
+    <p>There are no settings (a native select doesn't have settings), although there are a couple of special features,
+      documented below.</p>
+
     <h2>Display text</h2>
-    <p>You can specify an alternate text for each option, which will be displayed on the dropdown when that option is selected.</p>
-    
+    <p>You can specify an alternate text for each option, which will be displayed on the dropdown when that option is
+      selected.</p>
+
     <p>Add a <code class="language-html">data-display</code> attribute to the desired options. For example:</p>
-    
+
     <pre><code class="language-html">&lt;select&gt;
   &lt;option data-display=&quot;Select&quot;&gt;Nothing&lt;/option&gt;
   &lt;option value=&quot;1&quot;&gt;Some option&lt;/option&gt;
@@ -97,7 +101,7 @@
   &lt;option value=&quot;3&quot; disabled&gt;A disabled option&lt;/option&gt;
   &lt;option value=&quot;4&quot;&gt;Potato&lt;/option&gt;
 &lt;/select&gt;</code></pre>
-    
+
     <div class="box">
       <select class="selectize">
         <option data-display="Select">Nothing</option>
@@ -112,10 +116,10 @@
     <h2>Searchable options</h2>
 
     <p>Updates the custom dropdown to reflect any changes made to the original select element.</p>
-    
+
     <pre><code class="language-js">var options = {searchable: true};
     NiceSelect.bind(document.getElementById("seachable-select"), options);</code></pre>
-    
+
     <div class="box">
       <select id="seachable-select">
         <option data-display="Select">Nothing</option>
@@ -129,10 +133,10 @@
     <h2>Translations</h2>
 
     <p>Translate the three different texts: 'Select an option', 'Search', 'selected'</p>
-    
+
     <pre><code class="language-js">var options = {searchable: true, placeholder: 'select', searchtext: 'zoek', selectedtext: 'geselecteerd'};
     NiceSelect.bind(document.getElementById("seachable-select"), options);</code></pre>
-    
+
     <div class="box">
       <select id="translated-select" multiple>
         <option value="1">Some option</option>
@@ -143,11 +147,12 @@
     </div>
 
     <h2>Custom classes</h2>
-    
-    <p>Every class you assign to a select element will be copied to the generated dropdown. That way you can customize different versions of it to your needs just by adding new CSS.</p>
-    
+
+    <p>Every class you assign to a select element will be copied to the generated dropdown. That way you can customize
+      different versions of it to your needs just by adding new CSS.</p>
+
     <p>These are some examples included in the plugin stylesheet:</p>
-    
+
     <div class="box">
       <label>Wide</label>
       <select class="wide selectize">
@@ -158,7 +163,7 @@
         <option value="4">Potato</option>
       </select>
     </div>
-    
+
     <div class="box">
       <label class="right">Right</label>
       <select class="right selectize">
@@ -169,7 +174,7 @@
         <option value="4">Potato</option>
       </select>
     </div>
-    
+
     <div class="box">
       <label>Small</label>
       <select class="small selectize">
@@ -180,85 +185,90 @@
         <option value="4">Potato</option>
       </select>
     </div>
-    
+
     <h2>Methods</h2>
-    
+
     <h3>update</h3>
-    
+
     <p>Updates the custom dropdown to reflect any changes made to the original select element.</p>
-    
+
     <pre><code class="language-js">var instance = NiceSelect.bind(...);
     instance.update();</code></pre>
-    
+
     <h3>destroy</h3>
-    
+
     <p>Removes the custom dropdown and unbinds all its events.</p>
-    
+
     <pre><code class="language-js">var instance = NiceSelect.bind(...);
     instance.destroy();</code></pre>
-    
-    <h2>Notes</h2>  
-    
+
+    <h2>Notes</h2>
+
     <ul>
       <li>
-        <p>Autoprefixer is used to add vendor prefixes to CSS rules for older browser support. A <i>nice-select-prefixed.scss</i> file is also generated if you wish to include the SASS file in your project and you're not using Autoprefixer.</p>
+        <p>Autoprefixer is used to add vendor prefixes to CSS rules for older browser support. A
+          <i>nice-select-prefixed.scss</i> file is also generated if you wish to include the SASS file in your project
+          and you're not using Autoprefixer.</p>
       </li>
       <li>
-        <p>In some cases there can be a brief flash in which the native selects are displayed—between the time the page is loaded and the scripts are run. This can be fixed by adding a CSS rule to hide them beforehand:</p>
-            
+        <p>In some cases there can be a brief flash in which the native selects are displayed—between the time the page
+          is loaded and the scripts are run. This can be fixed by adding a CSS rule to hide them beforehand:</p>
+
         <pre><code class="language-scss">select {
   display: none;
 }</code></pre>
 
-        <p>Note that the above rule will hide all native select elements. If you're only applying the plugin to some select elements you should adapt the rule accordingly.</p>
+        <p>Note that the above rule will hide all native select elements. If you're only applying the plugin to some
+          select elements you should adapt the rule accordingly.</p>
       </li>
     </ul>
 
     <div class="footer">
       <h2>Use responsibly</h2>
-      
+
       <p><a href="http://www.lukew.com/ff/entry.asp?1950">Dropdowns should be the UI of last resort.</a></p>
-      
+
       <a href="https://github.com/bluzky/nice-select2/releases" class="button">Download</a>
       <a href="https://github.com/bluzky/nice-select2" class="button light">View on GitHub</a>
-      
+
       <div class="credit">
         Javascript by <a href="http://bluzky.github.io">Dung Nguyen Tien</a>
         Css by <a href="http://hernansartorio.com?r=ns">Hernán Sartorio</a>
       </div>
     </div>
-    
-    
+
+
   </div>
-  
+
   <script src="dist/js/nice-select2.js"></script>
   <script src="demo/fastclick.js"></script>
   <script src="demo/prism.js"></script>
-  
+
   <script>
-   document.addEventListener("DOMContentLoaded", function(e){
+    document.addEventListener("DOMContentLoaded", e => {
 
-     // default
-     var els = document.querySelectorAll(".selectize");
-     els.forEach(function(select){
-       NiceSelect.bind(select);
-     });
+      // default
+      const els = document.querySelectorAll(".selectize");
+      els.forEach(function (select) {
+        NiceSelect.bind(select);
+      });
 
-     // seachable 
-     var options = {searchable: true};
-     NiceSelect.bind(document.getElementById("seachable-select"), options); 
+      // seachable 
+      const seachableOptions = { searchable: true };
+      NiceSelect.bind(document.getElementById("seachable-select"), seachableOptions);
 
 
-     //translated-select 
-     var options = {
-      searchable: true, 
-      placeholder: 'select', 
-      searchtext: 'zoek', 
-      selectedtext: 'geselecteerd'
-    };
-    document.getElementById("translated-select")._niceSelect  = NiceSelect.bind(document.getElementById("translated-select"), options); 
-   });
+      //translated-select 
+      const translatedOptions = {
+        searchable: true,
+        placeholder: 'select',
+        searchtext: 'zoek',
+        selectedtext: 'geselecteerd'
+      };
+      document.getElementById("translated-select")._niceSelect = NiceSelect.bind(document.getElementById("translated-select"), translatedOptions);
+    });
   </script>
-  
+
 </body>
+
 </html>
