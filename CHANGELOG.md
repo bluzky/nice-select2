@@ -6,6 +6,7 @@
 - multi select value & quick edit
 - focus function (#49)
 - min-height property to select (#59)
+- store selection list in atribute
 
 ### Changed
 - udate selected options on select element (#61)
