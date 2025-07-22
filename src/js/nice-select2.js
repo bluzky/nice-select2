@@ -286,10 +286,16 @@ class NiceSelect {
     if(this.selectionList){
       this.selectionList.remove();
     }
-    
+
     if (this.dropdown) {
       this.dropdown.remove();
-      this.el.style.display = "";
+      this.el.style.display   = "";
+      this.el.style.opacity   = '';
+      this.el.style.width     = '';
+      this.el.style.padding   = '';
+      this.el.style.height    = '';
+      this.el.style.fontSize  = '';
+      this.el.style.minHeight = '';
     }
   }
 
