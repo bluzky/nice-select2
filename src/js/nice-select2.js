@@ -1,5 +1,3 @@
-import "../scss/nice-select2.scss";
-
 const triggerEvent      = (el, type, init = {}) => {
   let EventConstructor;
   if (type === "click") {
