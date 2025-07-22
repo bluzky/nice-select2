@@ -11,6 +11,7 @@
 ### Fixed
 
 ### Updated
+- module not recognized
 
 ## [2.3.1] - 2025-02-03
 
