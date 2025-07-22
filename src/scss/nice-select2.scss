@@ -258,3 +258,35 @@ $arrow_color: $gray !default;
     font-size: $font_size;
   }
 }
+
+.select-selection-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+  .select-selection {
+      background-color: #e4e4e4;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      box-sizing: border-box;
+      display: inline-block;
+      margin-left: 5px;
+      margin-top: 5px;
+      padding: 2px 5px;
+      position: relative;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
+      white-space: nowrap;
+  }
+
+  button.remove-select-selection {
+    height: 15px;
+    width: 15px;
+    line-height: 15px;
+    padding: 0px;
+    background-color: #bd2919;
+    border-radius: 20%;
+  } 
+}
