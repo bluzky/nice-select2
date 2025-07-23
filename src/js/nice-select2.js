@@ -64,6 +64,8 @@ class NiceSelect {
   }
 
   create() {
+    this.el.classList.add('hidden-select');
+    
     /* Object.assign(this.el.style, {
       opacity: "0",
       width: "0",
@@ -287,13 +289,7 @@ class NiceSelect {
 
     if (this.dropdown) {
       this.dropdown.remove();
-      this.el.style.display   = "";
-      this.el.style.opacity   = '';
-      this.el.style.width     = '';
-      this.el.style.padding   = '';
-      this.el.style.height    = '';
-      this.el.style.fontSize  = '';
-      this.el.style.minHeight = '';
+      this.el.classList.remove('hidden-select');
     }
   }
 
