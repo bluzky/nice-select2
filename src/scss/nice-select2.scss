@@ -47,8 +47,7 @@ $arrow_color: $gray !default;
     border-color: color.adjust($gray_light, $lightness: -5%);
   }
 
-  &:active,
-  &:focus {
+  &:active, &:focus {
     border-color: $primary_light;
   }
 
@@ -120,6 +119,58 @@ $arrow_color: $gray !default;
       line-height: $input_height_small - 2;
       min-height: $input_height_small - 2;
     }
+  }
+
+  .has-multiple {
+    white-space: inherit;
+    height: auto;
+    padding: 7px 12px;
+    min-height: 36px;
+    line-height: 22px;
+
+    span.current {
+      border: 1px solid #ccc;
+      background: #eee;
+      padding: 0 10px;
+      border-radius: 3px;
+      display: inline-block;
+      line-height: 24px;
+      font-size: 14px;
+      margin-bottom: 3px;
+      margin-right: 3px;
+    }
+
+    .multiple-options {
+      display: block;
+      line-height: 24px;
+      padding: 0;
+    }
+  }
+
+  .nice-select-search-box {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px;
+    pointer-events: none;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .nice-select-search {
+    box-sizing: border-box;
+    background-color: #fff;
+    border: 1px solid $gray_light;
+    border-radius: 3px;
+    color: $gray_dark;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 7px 12px;
+    margin: 0 10px 0 0;
+    width: 100%;
+    min-height: 36px;
+    line-height: 22px;
+    height: auto;
+    outline: 0 !important;
+    font-size: $font_size;
   }
 
   .nice-select-dropdown {
@@ -205,58 +256,13 @@ $arrow_color: $gray !default;
   width: 0;
 }
 
-.nice-select {
-  .has-multiple {
-    white-space: inherit;
-    height: auto;
-    padding: 7px 12px;
-    min-height: 36px;
-    line-height: 22px;
-
-    span.current {
-      border: 1px solid #ccc;
-      background: #eee;
-      padding: 0 10px;
-      border-radius: 3px;
-      display: inline-block;
-      line-height: 24px;
-      font-size: 14px;
-      margin-bottom: 3px;
-      margin-right: 3px;
-    }
-
-    .multiple-options {
-      display: block;
-      line-height: 24px;
-      padding: 0;
-    }
-  }
-
-  .nice-select-search-box {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 5px;
-    pointer-events: none;
-    border-radius: 5px 5px 0 0;
-  }
-
-  .nice-select-search {
-    box-sizing: border-box;
-    background-color: #fff;
-    border: 1px solid $gray_light;
-    border-radius: 3px;
-    color: $gray_dark;
-    display: inline-block;
-    vertical-align: middle;
-    padding: 7px 12px;
-    margin: 0 10px 0 0;
-    width: 100%;
-    min-height: 36px;
-    line-height: 22px;
-    height: auto;
-    outline: 0 !important;
-    font-size: $font_size;
-  }
+.hidden-select{
+  opacity: 0,
+  width: 0,
+  padding: 0,
+  height: 0,
+  fontSize: 0,
+  minHeight: "auto"
 }
 
 .select-selection-list {

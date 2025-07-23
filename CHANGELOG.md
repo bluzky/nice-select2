@@ -12,6 +12,7 @@
 ### Changed
 - udate selected options on select element (#61)
 - show scrollbar (#64)
+- removed imported style
 
 ### Fixed
 
