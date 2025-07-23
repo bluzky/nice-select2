@@ -61,6 +61,8 @@ class NiceSelect {
     this.multiple         = attr(this.el, "multiple");
     this.disabled         = attr(this.el, "disabled");
     this.create();
+
+    this.bindElementEvents();
   }
 
   create() {
@@ -75,10 +77,11 @@ class NiceSelect {
 
     this.data ? this.processData(this.data) : this.extractData();
     this.renderDropdown();
-    this.bindEvent();
+    this.bindDropdownEvents();
   }
 
   processData(data) {
+    console.log(data)
     this.options = data.map((item) => ({
       data: item,
       attributes: {
@@ -95,6 +98,7 @@ class NiceSelect {
     const selectedOptions = [];
 
     this.data = options.map((item) => {
+      console.log(item);
       let itemData;
 
       if (item.tagName === "OPTGROUP") {
@@ -243,11 +247,23 @@ class NiceSelect {
     return span;
   }
 
-  update() {
+  update(e='') {
+    console.log(e);
+    console.log(this);
+
+    if(e == '2'){
+      //let option   = Array.from(this.options).find(option => option.textContent === item.data.text);
+
+      this.el.forEach(option =>{
+        option.setAttribute("selected", "selected");
+        option.selected = true;
+      })
+    }
     this.extractData();
 
     if (this.dropdown) {
       const open = hasClass(this.dropdown, "open");
+      this.removeSelectionList();
       this.dropdown.remove();
       this.create();
       if (open) {
@@ -282,7 +298,7 @@ class NiceSelect {
 
   destroy() {
     if(this.selectionList){
-      this.selectionList.remove();
+      this.removeSelectionList();
     }
 
     if (this.dropdown) {
@@ -338,35 +354,35 @@ class NiceSelect {
     }
   }
 
-  updateSelect(target){
+  updateSelect(){
+    this.selectedOptions.forEach(item =>{
+      let option   = Array.from(this.el.options).find(option => option.textContent === item.data.text);
 
-    const selected = Array.from(this.el.selectedOptions);
+      if(option == undefined){
+        option   = Array.from(this.el.options).find(option => option.textContent === item.data.value);
+      }
 
-    for (const option of Array.from(this.el.options)) {
-      console.log(option);
-      console.log(option.selected);
-      if (selected.includes(option)) {
+      if(item.attributes.selected){
         option.selected = true;
         option.setAttribute("selected", "selected");
       } else {
         option.selected = false;
         option.removeAttribute("selected");
-
-        this._multipleListRemove(option);
       }
-    }
-
-    this.update();
+    });
   }
 
-  bindEvent() {
+  bindElementEvents(){
+    this.el.addEventListener("invalid", () => this._triggerValidationMessage("invalid"));
+    window.addEventListener("click", e => this._onClickedOutside(e));
+    this.el.addEventListener("change", (e) => this.update(e));
+  }
+
+  bindDropdownEvents() {
     this.dropdown.addEventListener("click", (e) => this._onClicked(e));
     this.dropdown.addEventListener("keydown", (e) => this._onKeyPressed(e));
     this.dropdown.addEventListener("focusin", () => triggerFocusIn(this.el));
     this.dropdown.addEventListener("focusout", () => triggerFocusOut(this.el));
-    this.el.addEventListener("invalid", () => this._triggerValidationMessage("invalid"));
-    this.el.addEventListener("change", (e) => this.updateSelect(e.target));
-    window.addEventListener("click", (e) => this._onClickedOutside(e));
 
     if (this.config.searchable) this._bindSearchEvent();
   }
@@ -386,13 +402,14 @@ class NiceSelect {
   }
 
   _onItemClicked(option, e) {
+    console.log(option)
     const optionEl = e.target;
     if (!hasClass(optionEl, "disabled")) {
       if (this.multiple) {
         if (hasClass(optionEl, "selected")) {
           removeClass(optionEl, "selected");
           this.selectedOptions = this.selectedOptions.filter(
-            (item) => item !== option
+            (item) => item.data !== option.data
           );
 
           const opt = this.el.querySelector(
@@ -490,13 +507,15 @@ class NiceSelect {
   }
 
   updateSelectValue() {
+    console.log('test');
+
     if (this.selectedOptions.length > 0) {
       this.el.value = this.selectedOptions[0].data.value;
     }
 
     const select = this.el;
 
-    // FIrst mark all options as not selected
+    /* // First mark all options as not selected
     select.querySelectorAll("option").forEach(function (item) {
       item.removeAttribute("selected");
     });
@@ -510,9 +529,17 @@ class NiceSelect {
         el.setAttribute("selected", "selected");
         el.selected = true;
       }
-    });
+    }); */
+
+    this.updateSelect();
+
+    // Remove the event listener so we don't create a loop
+    this.el.removeEventListener("change", this.update);
 
     triggerChange(this.el);
+
+    // Add event listener again
+    this.el.addEventListener("change", this.update);
   }
 
   resetSelectValue() {
@@ -640,8 +667,14 @@ class NiceSelect {
     }
   }
 
+  removeSelectionList(){
+    if(this.selectionList != null){
+      this.selectionList.remove();
+      this.selectionList  = null;
+    }
+  }
+
   _multipleListAdd(option) {
-  
     if(option.data.disabled || option.data.value == "" || !option.attributes.selected){
       return;
     }
@@ -678,12 +711,16 @@ class NiceSelect {
 
   _multipleListRemove(target) {
 
+    if(this.selectionList == null){
+      return;
+    }
+
     if(target.target != null){
       target  = target.target;
     }
 
     // Close button clicked
-    if(target.matches('.remove-select-selection')){
+    if(target.matches != undefined && target.matches('.remove-select-selection')){
       target.closest('li.select-selection').remove();
 
       let parent  = target.closest('li.select-selection');
@@ -692,9 +729,13 @@ class NiceSelect {
         if(option.data.value == parent.dataset.value){
           removeClass(option.element, "selected");
           this.selectedOptions.splice(this.selectedOptions.indexOf(option), 1);
-          var opt = this.el.querySelector(`option[value="${option.data.value}"]`);
-          opt.removeAttribute('selected');
-          opt.selected = false;
+
+          let opt = this.el.querySelector(`option[value="${option.data.value}"]`);
+
+          if(opt){
+            opt.removeAttribute('selected');
+            opt.selected = false;
+          }
         }
 
         this._renderSelectedItems();
@@ -705,16 +746,26 @@ class NiceSelect {
       if(target.element != undefined && target.element.classList.contains('selected')){
         return;
       }
-
-      let parent  = this.el.parentElement;
       
-      let ul      = parent.querySelector('.select-selection-list');
-      
-      let selection  = Array.from(ul.querySelectorAll('li span')).find(el => el.textContent === target.innerText);
+      let targetText;
+      if(target.innerText != undefined){
+        targetText  = target.innerText;
+        if(target.dataset.display != undefined){
+          targetText  = target.dataset.display;
+        }
+      }else{
+        targetText  = target.data.text;
+      }
 
-      if(ul != null && selection != null){
+      let selection   = Array.from(this.selectionList.querySelectorAll('li span')).find(el => el.textContent === targetText);
+
+      if(selection != null){
         selection.closest('li').remove();
       }
+    }
+
+    if(this.selectionList.querySelectorAll('li').length === 0){
+      this.removeSelectionList();
     }
   }
 }
