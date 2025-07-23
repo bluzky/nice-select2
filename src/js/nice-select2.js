@@ -105,14 +105,14 @@ class NiceSelect {
           text,
           value: item.value,
           extra: item.dataset.extra,
-          selected: item.hasAttribute("selected"),
-          disabled: item.hasAttribute("disabled"),
+          selected: item.selected,
+          disabled: item.disabled,
         };
       }
 
       const attributes = {
-        selected: item.hasAttribute("selected"),
-        disabled: item.hasAttribute("disabled"),
+        selected: item.selected,
+        disabled: item.disabled,
         optgroup: item.tagName === "OPTGROUP",
       };
 
