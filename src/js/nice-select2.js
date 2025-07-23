@@ -244,7 +244,7 @@ class NiceSelect {
   }
 
   update() {
-    this.extractData();
+    //this.extractData();
 
     if (this.dropdown) {
       const open = hasClass(this.dropdown, "open");
