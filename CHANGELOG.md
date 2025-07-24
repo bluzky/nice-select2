@@ -3,6 +3,17 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+
+## [2.4.0] - 2025-07-24
+
+
+### Added
 - multi select value & quick edit
 - focus function (#49)
 - min-height property to select (#59)
