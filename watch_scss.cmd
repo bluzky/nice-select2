@@ -1,0 +1,1 @@
+sass --watch --style=compressed "./src/scss/nice-select2.scss" "./dist/css/nice-select2.css"

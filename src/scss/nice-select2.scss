@@ -257,12 +257,12 @@ $arrow_color: $gray !default;
 }
 
 .hidden-select{
-  opacity: 0,
-  width: 0,
-  padding: 0,
-  height: 0,
-  fontSize: 0,
-  minHeight: "auto"
+  opacity: 0;
+  width: 0;
+  padding: 0;
+  height: 0;
+  font-size: 0;
+  min-height: "auto";
 }
 
 .select-selection-list {

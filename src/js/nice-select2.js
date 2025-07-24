@@ -37,6 +37,7 @@ const defaultOptions = {
   placeholder: "Select an option",
   searchtext: "Search",
   selectedtext: "selected",
+  hideSelect: true
 };
 
 class NiceSelect {
@@ -50,6 +51,7 @@ class NiceSelect {
     }
 
     this.el               = element;
+    this.el._niceSelect   = this;
     this.config           = { ...defaultOptions, ...options };
     this.data             = this.config.data;
     this.selectedOptions  = [];
@@ -66,24 +68,17 @@ class NiceSelect {
   }
 
   create() {
-    this.el.classList.add('hidden-select');
-    
-    /* Object.assign(this.el.style, {
-      opacity: "0",
-      width: "0",
-      padding: "0",
-      height: "0",
-      fontSize: "0",
-      minHeight: "auto",
-    }); */
-
     this.data ? this.processData(this.data) : this.extractData();
+    this.el.classList.remove('hidden-select');
     this.renderDropdown();
+
+    if(this.config.hideSelect){
+      this.el.classList.add('hidden-select');
+    }
     this.bindDropdownEvents();
   }
 
   processData(data) {
-    console.log(data)
     this.options = data.map((item) => ({
       data: item,
       attributes: {
@@ -100,7 +95,6 @@ class NiceSelect {
     const selectedOptions = [];
 
     this.data = options.map((item) => {
-      console.log(item);
       let itemData;
 
       if (item.tagName === "OPTGROUP") {
@@ -170,6 +164,9 @@ class NiceSelect {
     this._renderItems();
   }
 
+  /*
+    Updates the text shown in the dropdown header
+  */
   _renderSelectedItems() {
     if (this.multiple) {
       let selectedHtml = "";
@@ -233,7 +230,7 @@ class NiceSelect {
       if (option.attributes.selected) classList.push("selected");
       if (option.attributes.disabled) classList.push("disabled");
       li.classList.add(...classList);
-      li.addEventListener("click", (e) => this._onItemClicked(option, e));
+      li.addEventListener("click", (e) => this._onDropdownItemClicked(option, e));
     }
 
     option.element = li;
@@ -250,30 +247,12 @@ class NiceSelect {
   }
 
   update(e='') {
-    console.log(e);
-    console.log(this);
-
-    if(e == '2'){
-      //let option   = Array.from(this.options).find(option => option.textContent === item.data.text);
-
-      this.el.forEach(option =>{
-        option.setAttribute("selected", "selected");
-        option.selected = true;
-      })
+    let $this  = this;
+    if(e != ''){
+      $this  = e.target._niceSelect; 
     }
-    this.extractData();
-
-    if (this.dropdown) {
-      const open = hasClass(this.dropdown, "open");
-      this.removeSelectionList();
-      this.dropdown.remove();
-      this.create();
-      if (open) {
-        triggerClick(this.dropdown);
-      }
-    }
-
-    attr(this.el, "disabled") ? this.disable() : this.enable();
+    
+    $this.syncDropdown();
   }
 
   disable() {
@@ -350,28 +329,10 @@ class NiceSelect {
     }
   }
 
-  updateSelect(){
-    this.selectedOptions.forEach(item =>{
-      let option   = Array.from(this.el.options).find(option => option.textContent === item.data.text);
-
-      if(option == undefined){
-        option   = Array.from(this.el.options).find(option => option.textContent === item.data.value);
-      }
-
-      if(item.attributes.selected){
-        option.selected = true;
-        option.setAttribute("selected", "selected");
-      } else {
-        option.selected = false;
-        option.removeAttribute("selected");
-      }
-    });
-  }
-
   bindElementEvents(){
     this.el.addEventListener("invalid", () => this._triggerValidationMessage("invalid"));
     window.addEventListener("click", e => this._onClickedOutside(e));
-    this.el.addEventListener("change", (e) => this.update(e));
+    this.el.addEventListener("change", this.update);
   }
 
   bindDropdownEvents() {
@@ -397,145 +358,102 @@ class NiceSelect {
     this.focus(e.target);
   }
 
-  _onItemClicked(option, e) {
-    console.log(option)
+  _onDropdownItemClicked(option, e) {
     const optionEl = e.target;
-    if (!hasClass(optionEl, "disabled")) {
-      if (this.multiple) {
-        if (hasClass(optionEl, "selected")) {
-          removeClass(optionEl, "selected");
-          this.selectedOptions = this.selectedOptions.filter(
-            (item) => item.data !== option.data
-          );
 
-          const opt = this.el.querySelector(
-            `option[value="${optionEl.dataset.value}"]`
-          );
+    if (hasClass(optionEl, "disabled")) {
+      return;
+    }
 
-          if (opt) {
-            opt.removeAttribute("selected");
-            opt.selected = false;
-          }
+    if (this.multiple) {
+      let selected;
 
-          this._multipleListRemove(option);
-        } else {
-          addClass(optionEl, "selected");
-          this.selectedOptions.push(option);
+      if (hasClass(optionEl, "selected")) {
+        selected  = false;
 
-          if(this.config.showSelectedItems){
-            option.attributes.selected = true;
-            this._multipleListAdd(option);
-          }
-        }
+        removeClass(optionEl, "selected");
+
+        // Update Selected Options
+        this.selectedOptions = this.selectedOptions.filter(
+          (item) => item.data !== option.data
+        );
       } else {
-        this.options.forEach((item) => removeClass(item.element, "selected"));
+        selected  = true;
 
         addClass(optionEl, "selected");
 
-        this.selectedOptions = [option];
+        // Update Selected Options
+        this.selectedOptions.push(option);      
       }
 
-      this._renderSelectedItems();
+      // Update option 
+      option.data.selected        = selected;
+      option.attributes.selected  = selected;
+    } else {      
+      // Mark all dropdown options as unselected
+      this.dropdown.querySelectorAll('li.selected').forEach((li) => removeClass(li, "selected"));
 
-      this.updateSelectValue();
+      // add the selected class to the current
+      addClass(optionEl, "selected");
+
+      // Update Selected Options Attribute
+      this.selectedOptions = [option];
+
+      // Update option properties 
+      let prevSelected  = this.options.find(item => item.attributes.selected);
+      if(prevSelected){
+        prevSelected.data.selected        = false;
+        prevSelected.attributes.selected  = false;
+      }
+
+      option.data.selected        = true;
+      option.attributes.selected  = true;
     }
+
+    this._renderSelectedItems();
+
+    this.syncSelectValue();
+
+    this.syncSelectionList();
   }
 
-  setValue(value) {
-    const select = this.el;
-    let noSelected = true;
+  /*
+    Syncs the original select element with the dropdown
+  */
+  syncSelectValue() {
+    const select    = this.el;
 
-    // Validate input type
-    if (select.multiple) {
-      if (!Array.isArray(value)) {
-        throw new Error('setValue expects an array for multiple select elements');
-      }
-
-      value = value.map(String);
-    } else {
-      if (Array.isArray(value)) {
-        throw new Error('setValue expects a single value for non-multiple select elements');
-      }
-
-      if (value !== null && value !== undefined && typeof value !== 'string' && typeof value !== 'number') {
-        throw new Error('setValue expects a string or number for non-multiple select elements');
-      }
-
-      value = String(value);
-    }
-
-    for (const opt of select.options) {
-      const currentValue = select.multiple
-        ? value.includes(opt.value)
-          ? opt.value
-          : null
-        : value;
-      if (opt.value === currentValue && !opt.disabled) {
-        if (noSelected) {
-          select.value = currentValue;
-          noSelected = false;
-        }
-
-        opt.setAttribute("selected", true);
-        opt.selected = true;
-      } else {
-        opt.removeAttribute("selected");
-        opt.selected = false;
-      }
-    }
-
-    if (noSelected && !select.multiple && select.options.length) {
-      select.options[0].setAttribute("selected", true);
+    // no value selected
+    if (this.selectedOptions.length === 0 && select.options.length) {
       select.options[0].selected = true;
       select.value = select.options[0].value;
+    }else if (this.selectedOptions.length > 0) {
+      select.value = this.selectedOptions[0].data.value;
+    }else{
+      select.value = '';
     }
 
-    this.update();
-  }
+    this.options.forEach(item =>{
+      let option   = Array.from(select.options).find(option => option.textContent === item.data.text);
 
-  getValue() {
-    const select = this.el;
-    if (!select.multiple) return select.value;
+      if(option == undefined){
+        option   = Array.from(select.options).find(option => option.textContent === item.data.value);
+      }
 
-    return Array.from(select.options)
-      .filter((opt) => opt.selected)
-      .map((opt) => opt.value);
-  }
-
-  updateSelectValue() {
-    console.log('test');
-
-    if (this.selectedOptions.length > 0) {
-      this.el.value = this.selectedOptions[0].data.value;
-    }
-
-    const select = this.el;
-
-    /* // First mark all options as not selected
-    select.querySelectorAll("option").forEach(function (item) {
-      item.removeAttribute("selected");
+      if(item.attributes.selected){
+        option.selected = true;
+      } else {
+        option.selected = false;
+      }
     });
 
-    // Mark the selected options as selected in the select element
-    this.selectedOptions.forEach( item => {
-      let el = select.querySelector(`option[value="${item.data.value}"]`);
-
-      if (el){
-        //Change it, cause it works more correctly.
-        el.setAttribute("selected", "selected");
-        el.selected = true;
-      }
-    }); */
-
-    this.updateSelect();
-
     // Remove the event listener so we don't create a loop
-    this.el.removeEventListener("change", this.update);
+    select.removeEventListener("change", this.update);
 
-    triggerChange(this.el);
+    triggerChange(select);
 
     // Add event listener again
-    this.el.addEventListener("change", this.update);
+    select.addEventListener("change", this.update);
   }
 
   resetSelectValue() {
@@ -544,7 +462,6 @@ class NiceSelect {
       this.selectedOptions.forEach((item) => {
         const el = select.querySelector(`option[value="${item.data.value}"]`);
         if (el) {
-          el.removeAttribute("selected");
           el.selected = false;
         }
       });
@@ -553,6 +470,45 @@ class NiceSelect {
     }
 
     triggerChange(this.el);
+  }
+
+  /*
+    Syncs the dropdown with the select
+  */
+  syncDropdown(){
+    if (this.dropdown) {
+      const open = hasClass(this.dropdown, "open");
+
+      this.removeSelectionList();
+
+      this.dropdown.remove();
+
+      this.data   = null;
+
+      this.create();
+
+      if (open) {
+        triggerClick(this.dropdown);
+      }
+    }
+
+    attr(this.el, "disabled") ? this.disable() : this.enable();
+  }
+
+  /*
+    Syncs the selected list with the dropdown
+  */
+  syncSelectionList(){
+    if(!this.config.showSelectedItems){
+      return;
+    }
+
+    this.removeSelectionList();
+
+    // Update multiple list
+    this.selectedOptions.forEach( item =>{
+      this._multipleListAdd(item);
+    });
   }
 
   _onClickedOutside(e) {
@@ -670,20 +626,29 @@ class NiceSelect {
     }
   }
 
+  updateDropdownOption(){
+
+  }
+
   _multipleListAdd(option) {
-    if(option.data.disabled || option.data.value == "" || !option.attributes.selected){
+    if(!this.multiple || option.data.disabled || option.data.value == "" || !option.attributes.selected){
       return;
     }
 
+    // Create the list
     if(this.selectionList == null){
       this.selectionList	 		= document.createElement('ul');
       this.selectionList.classList.add('select-selection-list');
 
       this.el.after(this.selectionList);
-    }else if(this.selectionList.querySelector(`[data-value="${option.data.value}"]`) != null){
+    }
+    
+    // Option is already in the list
+    else if(this.selectionList.querySelector(`[data-value="${option.data.value}"]`) != null){
       return;
     }
 
+    // Create a list element
     let li	 		= document.createElement('li');
     li.classList.add('select-selection');
 
@@ -702,6 +667,7 @@ class NiceSelect {
 
     this.selectionList.appendChild(li);
 
+    // Add listener
     li.querySelectorAll('.remove-select-selection').forEach(el=> el.addEventListener("click", this._multipleListRemove.bind(this)));
   }
 
@@ -715,53 +681,19 @@ class NiceSelect {
       target  = target.target;
     }
 
-    // Close button clicked
-    if(target.matches != undefined && target.matches('.remove-select-selection')){
-      target.closest('li.select-selection').remove();
-
-      let parent  = target.closest('li.select-selection');
-
-      this.selectedOptions.forEach(option => {
-        if(option.data.value == parent.dataset.value){
-          removeClass(option.element, "selected");
-          this.selectedOptions.splice(this.selectedOptions.indexOf(option), 1);
-
-          let opt = this.el.querySelector(`option[value="${option.data.value}"]`);
-
-          if(opt){
-            opt.removeAttribute('selected');
-            opt.selected = false;
-          }
-        }
-
-        this._renderSelectedItems();
-      });
-    
-    // Deselected in dropdown or Deselected from original select
-    }else{
-      if(target.element != undefined && target.element.classList.contains('selected')){
-        return;
-      }
-      
-      let targetText;
-      if(target.innerText != undefined){
-        targetText  = target.innerText;
-        if(target.dataset.display != undefined){
-          targetText  = target.dataset.display;
-        }
-      }else{
-        targetText  = target.data.text;
-      }
-
-      let selection   = Array.from(this.selectionList.querySelectorAll('li span')).find(el => el.textContent === targetText);
-
-      if(selection != null){
-        selection.closest('li').remove();
-      }
+    // Close button not clicked
+    if(target.matches == undefined || !target.matches('.remove-select-selection')){
+      return;
     }
 
-    if(this.selectionList.querySelectorAll('li').length === 0){
-      this.removeSelectionList();
+    // Find the dropdown item and click it
+    let parent  = target.closest('li.select-selection');
+    
+    let el  = this.options.find(item => item.data.value === parent.dataset.value).element;
+  
+    // only click when currently selected
+    if(el && el.matches('.selected')){
+      el.click();
     }
   }
 }

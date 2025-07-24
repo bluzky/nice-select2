@@ -69,7 +69,7 @@
     <p>...into this:</p>
 
     <div class="box">
-      <select class="selectize" multiple="multiple">
+      <select class="selectize">
         <option value="1">Some option</option>
         <option value="2">Another option</option>
         <option value="3" disabled>A disabled option</option>
@@ -132,10 +132,10 @@
 
     <h2>Multi Select options</h2>
 
-    <p>Updates the custom dropdown to reflect any changes made to the original select element.</p>
+    <p>You can select multiple options.<br>If showSelectedItems property is true (default) it will show selected options above the select as well.<br>Updates the custom dropdown to reflect any changes made to the original select element. See how the original select is also updating.</p>
 
     <pre><code class="language-js">var options = {searchable: true};
-    NiceSelect.bind(document.getElementById("multiple-select"), options);</code></pre>
+NiceSelect.bind(document.getElementById("multiple-select"), options);</code></pre>
 
     <div class="box">
       <select id="multiple-select" multiple="" required>
@@ -275,9 +275,8 @@
       NiceSelect.bind(document.getElementById("searchable-select"), seachableOptions);
 
       // multiple 
-      const multipleOptions = { searchable: true };
-      NiceSelect.bind(document.getElementById("multiple-select"), seachableOptions);
-
+      const multipleOptions = { searchable: true, hideSelect: false };
+      NiceSelect.bind(document.getElementById("multiple-select"), multipleOptions);
 
       //translated-select 
       const translatedOptions = {
