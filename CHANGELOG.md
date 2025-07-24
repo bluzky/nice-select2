@@ -10,17 +10,17 @@
 - update original select (#78)
 
 ### Changed
-- udate selected options on select element (#61)
+- update selected options on select element (#61)
 - show scrollbar (#64)
 - removed imported style
 
 ### Fixed
+- show original select on destroy
+- module not recognized (#57)
+- placeholder not showing up (#85)
 
 ### Updated
-- module not recognized (#57)
-- show original select on destroy
 - update function
-- placeholder not showing up (#85)
 
 ## [2.3.1] - 2025-02-03
 
