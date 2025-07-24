@@ -12,23 +12,22 @@
 
 ## [2.4.0] - 2025-07-24
 
-
 ### Added
 - multi select value & quick edit
 - focus function [#49](https://github.com/bluzky/nice-select2/issues/49)
-- min-height property to select (#59)
+- min-height property to select [#59](https://github.com/bluzky/nice-select2/issues/59)
 - store selection list in atribute
-- update original select (#78)
+- update original select [#78](https://github.com/bluzky/nice-select2/issues/78)
 
 ### Changed
-- update selected options on select element (#61)
-- show scrollbar (#64)
+- update selected options on select element [#61](https://github.com/bluzky/nice-select2/issues/61)
+- show scrollbar [#63](https://github.com/bluzky/nice-select2/issues/63)
 - removed imported style
 
 ### Fixed
 - show original select on destroy
-- module not recognized (#57)
-- placeholder not showing up (#85)
+- module not recognized [#57](https://github.com/bluzky/nice-select2/issues/57)
+- placeholder not showing up [#85](https://github.com/bluzky/nice-select2/issues/85)
 
 ### Updated
 - update function
