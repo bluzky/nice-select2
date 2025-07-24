@@ -20,6 +20,7 @@
 - module not recognized (#57)
 - show original select on destroy
 - update function
+- placeholder not showing up (#85)
 
 ## [2.3.1] - 2025-02-03
 
