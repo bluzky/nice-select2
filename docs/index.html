@@ -58,7 +58,7 @@
     <p>All done. That will turn this:</p>
 
     <div class="box">
-      <select class="ignore">
+      <select name='original' class="ignore">
         <option value="1">Some option</option>
         <option value="2">Another option</option>
         <option value="3" disabled>A disabled option</option>
@@ -69,15 +69,7 @@
     <p>...into this:</p>
 
     <div class="box">
-      <select class="selectize">
-        <option value="1">Some option</option>
-        <option value="2">Another option</option>
-        <option value="3" disabled>A disabled option</option>
-        <option value="4">Potato</option>
-        <option value="1">Some option</option>
-        <option value="2">Another option</option>
-        <option value="3" disabled>A disabled option</option>
-        <option value="4">Potato</option>
+      <select name='nice' class="selectize">
         <option value="1">Some option</option>
         <option value="2">Another option</option>
         <option value="3" disabled>A disabled option</option>
@@ -155,7 +147,7 @@ NiceSelect.bind(document.getElementById("multiple-select"), options);</code></pr
     NiceSelect.bind(document.getElementById("seachable-select"), options);</code></pre>
 
     <div class="box">
-      <select id="translated-select" multiple>
+      <select id="translated-select">
         <option value="1">Some option</option>
         <option value="2">Another option</option>
         <option value="3" disabled>A disabled option</option>
@@ -267,7 +259,7 @@ NiceSelect.bind(document.getElementById("multiple-select"), options);</code></pr
       // default
       const els = document.querySelectorAll(".selectize");
       els.forEach(function (select) {
-        NiceSelect.bind(select);
+        NiceSelect.bind(select, {placeholder: 'try me!'});
       });
 
       // searchable 
@@ -281,7 +273,7 @@ NiceSelect.bind(document.getElementById("multiple-select"), options);</code></pr
       //translated-select 
       const translatedOptions = {
         searchable: true,
-        placeholder: 'select',
+        placeholder: 'Test het Uit!',
         searchtext: 'zoek',
         selectedtext: 'geselecteerd'
       };

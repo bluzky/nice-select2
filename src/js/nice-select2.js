@@ -67,8 +67,8 @@ class NiceSelect {
     this.bindElementEvents();
   }
 
-  create() {
-    this.data ? this.processData(this.data) : this.extractData();
+  create(initial=true) {
+    this.data ? this.processData(this.data) : this.extractData(initial);
     this.el.classList.remove('hidden-select');
     this.renderDropdown();
 
@@ -89,13 +89,20 @@ class NiceSelect {
     }));
   }
 
-  extractData() {
+  extractData(initial) {
     const options = Array.from(this.el.querySelectorAll("option,optgroup"));
     const allOptions = [];
     const selectedOptions = [];
 
     this.data = options.map((item) => {
       let itemData;
+
+      let selected  = item.selected;
+
+      // First item is marked as selected on default selects
+      if(initial && item.selected && !item.defaultSelected){
+        selected = false;
+      }
 
       if (item.tagName === "OPTGROUP") {
         itemData = { text: item.label, value: "optgroup" };
@@ -105,13 +112,13 @@ class NiceSelect {
           text,
           value: item.value,
           extra: item.dataset.extra,
-          selected: item.selected,
+          selected: selected,
           disabled: item.disabled,
         };
       }
 
       const attributes = {
-        selected: item.selected,
+        selected: selected,
         disabled: item.disabled,
         optgroup: item.tagName === "OPTGROUP",
       };
@@ -423,14 +430,12 @@ class NiceSelect {
   syncSelectValue() {
     const select    = this.el;
 
-    // no value selected
-    if (this.selectedOptions.length === 0 && select.options.length) {
-      select.options[0].selected = true;
-      select.value = select.options[0].value;
-    }else if (this.selectedOptions.length > 0) {
+    if (this.selectedOptions.length > 0) {
       select.value = this.selectedOptions[0].data.value;
     }else{
+      // no value selected
       select.value = '';
+      select.selectedIndex = -1;
     }
 
     this.options.forEach(item =>{
@@ -485,7 +490,7 @@ class NiceSelect {
 
       this.data   = null;
 
-      this.create();
+      this.create(false);
 
       if (open) {
         triggerClick(this.dropdown);
