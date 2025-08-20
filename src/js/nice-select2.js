@@ -439,16 +439,23 @@ class NiceSelect {
     }
 
     this.options.forEach(item =>{
-      let option   = Array.from(select.options).find(option => option.textContent === item.data.text);
+      let matchingOption = Array.from(select.options).find(option => {
+        return (option.dataset.display || option.textContent) === item.data.text;
+      });
 
-      if(option == undefined){
-        option   = Array.from(select.options).find(option => option.textContent === item.data.value);
+      if(matchingOption == undefined){
+        matchingOption = Array.from(select.options).find(option => option.textContent === item.data.value);
+      }
+
+      if (matchingOption == undefined) {
+        // no matching option was found, continue
+        return;
       }
 
       if(item.attributes.selected){
-        option.selected = true;
+        matchingOption.selected = true;
       } else {
-        option.selected = false;
+        matchingOption.selected = false;
       }
     });
 
