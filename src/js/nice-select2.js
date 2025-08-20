@@ -454,7 +454,7 @@ class NiceSelect {
       }
 
       if (matchingOption == undefined) {
-        // no matching option was found, continue
+        console.warn(`No matching option found for value: "${item.data.value}" in select element`, select);
         return;
       }
 
