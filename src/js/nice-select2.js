@@ -440,11 +440,17 @@ class NiceSelect {
 
     this.options.forEach(item =>{
       let matchingOption = Array.from(select.options).find(option => {
-        return (option.dataset.display || option.textContent) === item.data.text;
+        const a = String(option.dataset.display || option.textContent).trim().toLowerCase();
+        const b = String(item.data.text).trim().toLowerCase();
+        return a === b;
       });
 
       if(matchingOption == undefined){
-        matchingOption = Array.from(select.options).find(option => option.textContent === item.data.value);
+        matchingOption = Array.from(select.options).find(option => {
+          const a = String(option.value).trim().toLowerCase();
+          const b = String(item.data.value).trim().toLowerCase();
+          return a === b;
+        });
       }
 
       if (matchingOption == undefined) {
