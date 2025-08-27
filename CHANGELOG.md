@@ -22,6 +22,7 @@
 ### Updated
 - update function
 - merging issues
+- #97
 
 ## [2.3.1] - 2025-02-03
 
