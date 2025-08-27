@@ -1,6 +1,17 @@
 # Changelog
 
 ## [Unreleased] - yyyy-mm-dd
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+
+## [2.4.1] - 2025-08-27
+
 ### Added
 
 ### Changed
