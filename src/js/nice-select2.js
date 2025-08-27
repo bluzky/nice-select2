@@ -439,16 +439,29 @@ class NiceSelect {
     }
 
     this.options.forEach(item =>{
-      let option   = Array.from(select.options).find(option => option.textContent === item.data.text);
+      let matchingOption = Array.from(select.options).find(option => {
+        const a = String(option.dataset.display || option.textContent).trim().toLowerCase();
+        const b = String(item.data.text).trim().toLowerCase();
+        return a === b;
+      });
 
-      if(option == undefined){
-        option   = Array.from(select.options).find(option => option.textContent === item.data.value);
+      if(matchingOption == undefined){
+        matchingOption = Array.from(select.options).find(option => {
+          const a = String(option.value).trim().toLowerCase();
+          const b = String(item.data.value).trim().toLowerCase();
+          return a === b;
+        });
+      }
+
+      if (matchingOption == undefined) {
+        console.warn(`No matching option found for value: "${item.data.value}" in select element`, select);
+        return;
       }
 
       if(item.attributes.selected){
-        option.selected = true;
+        matchingOption.selected = true;
       } else {
-        option.selected = false;
+        matchingOption.selected = false;
       }
     });
 
