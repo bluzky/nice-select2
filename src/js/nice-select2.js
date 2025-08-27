@@ -67,6 +67,8 @@ class NiceSelect {
     this.#bindElementEvents();
   }
 
+  #create(initial=true) {
+    this.data ? this.processData(this.data) : this.extractData(initial);
   /* 
     PUBLIC FUNCTIONS
   */
@@ -167,7 +169,7 @@ class NiceSelect {
     this.#bindDropdownEvents();
   }
 
-  #processData(data) {
+  ##processData(data) {
     this.options = data.map((item) => ({
       data: item,
       attributes: {
@@ -178,7 +180,7 @@ class NiceSelect {
     }));
   }
 
-  #extractData(initial) {
+  ##extractData(initial) {
     const options = Array.from(this.el.querySelectorAll("option,optgroup"));
     const allOptions = [];
     const selectedOptions = [];
@@ -225,7 +227,7 @@ class NiceSelect {
     this.selectedOptions  = selectedOptions;
   }
 
-  #renderDropdown() {
+  ##renderDropdown() {
     const classes = [
       "nice-select",
       attr(this.el, "class") || "",
@@ -342,13 +344,99 @@ class NiceSelect {
     return span;
   }
 
+  update(e='') {
+    let $this  = this;
+    if(e != ''){
+      $this  = e.target._niceSelect; 
+    }
+    
+    $this.syncDropdown();
+  }
+
+  disable() {
+    if (!this.disabled) {
+      this.disabled = true;
+      addClass(this.dropdown, "disabled");
+    }
+  }
+
+  enable() {
+    if (this.disabled) {
+      this.disabled = false;
+      removeClass(this.dropdown, "disabled");
+    }
+  }
+
+  clear() {
+    this.resetSelectValue();
+    this.selectedOptions = [];
+    this._renderSelectedItems();
+    this.update();
+    triggerChange(this.el);
+  }
+
+  destroy() {
+    if(this.selectionList){
+      this.removeSelectionList();
+    }
+
+    if (this.dropdown) {
+      this.dropdown.remove();
+      this.el.classList.remove('hidden-select');
+    }
+  }
+
+  focus(target=''){
+    const isOpen = hasClass(this.dropdown, "open");
+
+    if (!isOpen) {
+      addClass(this.dropdown, "open");
+      triggerModalOpen(this.el);
+    } else {
+      if (this.multiple) {
+        if (target === this.dropdown.querySelector(".multiple-options")) {
+          removeClass(this.dropdown, "open");
+          triggerModalClose(this.el);
+        }
+      } else {
+        removeClass(this.dropdown, "open");
+        triggerModalClose(this.el);
+      }
+    }
+
+    if (hasClass(this.dropdown, "open")) {
+      const search = this.dropdown.querySelector(".nice-select-search");
+
+      if (search) {
+        search.value = "";
+        search.focus();
+      }
+
+      const focused = this.dropdown.querySelector(".focus");
+
+      if (focused) removeClass(focused, "focus");
+
+      const selected = this.dropdown.querySelector(".selected");
+      if (selected) addClass(selected, "focus");
+
+      this.dropdown
+        .querySelectorAll("ul li")
+        .forEach((item) => (item.style.display = ""));
+    } else {
+      this.dropdown.focus();
+    }
+  }
+
+  #bindElementEvents(){
+    this.el.addEventListener("invalid", () => this._triggerValidationMessage("invalid"));
+    window.addEventListener("click", e => this._onClickedOutside(e));
   #bindElementEvents(){
     this.el.addEventListener("invalid", () => this.#triggerValidationMessage("invalid"));
     window.addEventListener("click", e => this.#onClickedOutside(e));
     this.el.addEventListener("change", this.update);
   }
 
-  #bindDropdownEvents() {
+  ##bindDropdownEvents() {
     this.dropdown.addEventListener("click", (e) => this.#onClicked(e));
     this.dropdown.addEventListener("keydown", (e) => this.#onKeyPressed(e));
     this.dropdown.addEventListener("focusin", () => triggerFocusIn(this.el));
@@ -433,7 +521,7 @@ class NiceSelect {
   /*
     Syncs the original select element with the dropdown
   */
-  #syncSelectValue() {
+  ##syncSelectValue() {
     const select    = this.el;
 
     if (this.selectedOptions.length > 0) {
@@ -445,16 +533,29 @@ class NiceSelect {
     }
 
     this.options.forEach(item =>{
-      let option   = Array.from(select.options).find(option => option.textContent === item.data.text);
+      let matchingOption = Array.from(select.options).find(option => {
+        const a = String(option.dataset.display || option.textContent).trim().toLowerCase();
+        const b = String(item.data.text).trim().toLowerCase();
+        return a === b;
+      });
 
-      if(option == undefined){
-        option   = Array.from(select.options).find(option => option.textContent === item.data.value);
+      if(matchingOption == undefined){
+        matchingOption = Array.from(select.options).find(option => {
+          const a = String(option.value).trim().toLowerCase();
+          const b = String(item.data.value).trim().toLowerCase();
+          return a === b;
+        });
+      }
+
+      if (matchingOption == undefined) {
+        console.warn(`No matching option found for value: "${item.data.value}" in select element`, select);
+        return;
       }
 
       if(item.attributes.selected){
-        option.selected = true;
+        matchingOption.selected = true;
       } else {
-        option.selected = false;
+        matchingOption.selected = false;
       }
     });
 
@@ -467,7 +568,7 @@ class NiceSelect {
     select.addEventListener("change", this.update);
   }
 
-  #resetSelectValue() {
+  ##resetSelectValue() {
     if (this.multiple) {
       const select = this.el;
       this.selectedOptions.forEach((item) => {
@@ -486,7 +587,7 @@ class NiceSelect {
   /*
     Syncs the dropdown with the select
   */
-  #syncDropdown(){
+  ##syncDropdown(){
     if (this.dropdown) {
       const open = hasClass(this.dropdown, "open");
 
@@ -509,7 +610,7 @@ class NiceSelect {
   /*
     Syncs the selected list with the dropdown
   */
-  #syncSelectionList(){
+  ##syncSelectionList(){
     if(!this.config.showSelectedItems){
       return;
     }
@@ -630,14 +731,14 @@ class NiceSelect {
     }
   }
 
-  #removeSelectionList(){
+  ##removeSelectionList(){
     if(this.selectionList != null){
       this.selectionList.remove();
       this.selectionList  = null;
     }
   }
 
-  #multipleListAdd(option) {
+  _multipleListAdd(option) {
     if(!this.multiple || option.data.disabled || option.data.value == "" || !option.attributes.selected){
       return;
     }
