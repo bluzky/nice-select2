@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- Replaced innerHTML with element creations #97
 
 ### Fixed
 - syncSelectValue() for data-display #100 Thanks @LuigiPulcini
