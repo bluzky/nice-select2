@@ -278,7 +278,11 @@ class NiceSelect {
             text += `, `;
           }
 
-          selectedHtml += `<span class="current">${text}</span>`;
+          let span  = document.createElement("span");
+          span.classList.add("current");
+          span.textContent = text;
+
+          selectedHtml += span.outerHTML;
         });
 
         selectedHtml = selectedHtml || this.placeholder;
@@ -288,12 +292,9 @@ class NiceSelect {
 
       this.dropdown.querySelector(".multiple-options").innerHTML = selectedHtml;
     } else {
-      const html =
-        this.selectedOptions.length > 0
-          ? this.selectedOptions[0].data.text
-          : this.placeholder;
+      const text = this.selectedOptions.length > 0 ? this.selectedOptions[0].data.text : this.placeholder;
 
-      this.dropdown.querySelector(".current").innerHTML = html;
+      this.dropdown.querySelector(".current").textContent = text;
     }
   }
 
@@ -311,8 +312,8 @@ class NiceSelect {
   }
 
   #renderItem(option) {
-    const li      = document.createElement("li");
-    li.innerHTML  = option.data.text;
+    const li        = document.createElement("li");
+    li.textContent  = option.data.text;
 
     if (option.data.extra !== undefined) {
       li.appendChild(this.#renderItemExtra(option.data.extra));
@@ -674,16 +675,24 @@ class NiceSelect {
 
     li.dataset.value = option.data.value;
 
-    let html	  = `
-      <button type="button" class="small remove-select-selection">
-        <span class='remove-select-selection'>×</span>
-      </button>
-    `;
+    // Create a remove button
+    let button  = document.createElement('button');
+    button.classList.add('small', 'remove-select-selection');
 
-    // Add
-    html   += `<span class='selected-name'>${option.data.text}</span>`
+    let span  = document.createElement('span');
+    span.classList.add('remove-select-selection');
+    span.textContent  = 'x';
 
-    li.innerHTML	= html;
+    button.appendChild(span);
+
+    li.appendChild(button);
+
+    // Add the option text
+    span  = document.createElement('span');
+    span.classList.add('selected-name');
+    span.textContent  = option.data.text;
+
+    li.appendChild(span);
 
     this.selectionList.appendChild(li);
 
