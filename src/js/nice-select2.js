@@ -156,6 +156,19 @@ class NiceSelect {
   /*
      PRIVATE FUNCTIONS
   */
+  #sanitizeHtml(html) {
+    // Remove potentially malicious content from the text
+    // while allowing innocuous HTML markup
+    ['script', 'iframe', 'object', 'embed', 'applet'].forEach(tag => {
+      html = html.trim().replace(new RegExp(`<${tag}[^>]*>([\\S\\s]*?)<\/${tag}>`, 'gim'), '').replace(new RegExp(`<\/?\\s*${tag}\\s*>`, 'gim'), '');
+    });
+
+    // remove any event attribute from tags
+    html = html.replace(/ on\w+="[^"]*"/gim, '');
+
+    return html;
+  }
+
   #create(initial=true) {
     this.data ? this.#processData(this.data) : this.#extractData(initial);
     this.el.classList.remove('hidden-select');
@@ -196,7 +209,7 @@ class NiceSelect {
       if (item.tagName === "OPTGROUP") {
         itemData = { text: item.label, value: "optgroup" };
       } else {
-        const text = item.dataset.display ?? item.innerText;
+        const text = this.#sanitizeHtml(item.dataset.display ?? item.innerText);
         itemData = {
           text,
           value: item.value,
@@ -312,8 +325,8 @@ class NiceSelect {
   }
 
   #renderItem(option) {
-    const li        = document.createElement("li");
-    li.textContent  = option.data.text;
+    const li      = document.createElement("li");
+    li.innerHTML  = option.data.text;
 
     if (option.data.extra !== undefined) {
       li.appendChild(this.#renderItemExtra(option.data.extra));
@@ -362,7 +375,7 @@ class NiceSelect {
     const searchBox = this.dropdown.querySelector(".nice-select-search");
     if (searchBox) {
       searchBox.addEventListener("click", (e) => e.stopPropagation());
-      searchBox.addEventListener("input", (e) => this.#onSearchChanged(e));
+      searchBox.addEventListener("input", (e) => this.onSearchChanged(e));
     }
   }
 
@@ -611,7 +624,7 @@ class NiceSelect {
     return null;
   }
 
-  #onSearchChanged(e) {
+  onSearchChanged(e) {
     const text = e.target.value.toLowerCase();
 
     if (text === "") {
