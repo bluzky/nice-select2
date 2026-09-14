@@ -10,6 +10,18 @@
 
 ### Updated
 
+## [Fixes] - 2026-09-14
+
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+- 7, #104 and #105
+
 ## [2.4.1] - 2025-08-27
 
 ### Added
