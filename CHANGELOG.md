@@ -5,6 +5,7 @@
 ### Added
 
 ### Changed
+- added esm export
 
 ### Fixed
 
