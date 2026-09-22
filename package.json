@@ -2,21 +2,23 @@
   "name": "nice-select2",
   "version": "2.5.0",
   "description": "A lightweight Vanilla JavaScript plugin that replaces native select elements with customizable dropdowns.",
-  "main": "src/js/nice-select2.js",
+  "main": "./distsrc/js/nice-select2.js",
+  "module": "./dist/js/nice-select2.esm.js",
   "directories": {
     "doc": "docs"
   },
   "dependencies": {
-    "cross-env": "^7.0.3",
-    "css-loader": "^7.1.5"
+    "cross-env": "^10.1.0",
+    "css-loader": "^7.1.5",
+    "dompurify": "^3.4.15"
   },
   "devDependencies": {
     "mini-css-extract-plugin": "^2.10.2",
     "sass": "^1.104.1",
-    "sass-loader": "^16.0.8",
-    "shx": "^0.3.4",
-    "webpack": "^5.110.3",
-    "webpack-cli": "^6.0.1"
+    "sass-loader": "^17.0.1",
+    "shx": "^0.4.0",
+    "webpack": "^5.111.1",
+    "webpack-cli": "^7.2.3"
   },
   "scripts": {
     "watch": "webpack --watch --progress",
@@ -38,5 +40,10 @@
     "url": "https://github.com/bluzky/nice-select2/issues"
   },
   "homepage": "https://github.com/bluzky/nice-select2#readme",
-  "module": "dist/js/nice-select2.js"
+  "exports": {
+    ".": {
+      "import": "./dist/js/nice-select2.esm.js",
+      "require": "./dist/js/nice-select2.js"
+    }
+  }
 }
