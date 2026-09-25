@@ -3,6 +3,17 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+
+## [2.6.0] - 2026-09-25
+
+
+### Added
 esd package
 
 ### Changed
