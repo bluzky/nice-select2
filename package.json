@@ -10,11 +10,11 @@
   "dependencies": {
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.5",
-    "dompurify": "^3.4.15"
+    "dompurify": "^3.4.16"
   },
   "devDependencies": {
     "mini-css-extract-plugin": "^2.10.2",
-    "sass": "^1.104.1",
+    "sass": "^1.105.0",
     "sass-loader": "^17.0.1",
     "shx": "^0.4.0",
     "webpack": "^5.111.1",
