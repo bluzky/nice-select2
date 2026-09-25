@@ -7,6 +7,7 @@ esd package
 
 ### Changed
 - added esm export
+- doc update
 
 ### Fixed
 
