@@ -377,7 +377,7 @@ class NiceSelect {
   #onDropdownItemClicked(option, e) {
     const optionEl = e.currentTarget;
 
-    if (hasClass(optionEl, "disabled")) {
+    if (this.disabled || hasClass(optionEl, "disabled")) {
       return;
     }
 
